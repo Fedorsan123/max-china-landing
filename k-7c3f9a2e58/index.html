@@ -1,0 +1,1036 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#EDEFF5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Каркас года">
+<title>Каркас года</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #EDEFF5;
+    --surface: #FFFFFF;
+    --surface-2: #F5F6FA;
+    --line: #D9DDE8;
+    --line-soft: #E6E9F1;
+    --text: #171A24;
+    --muted: #5C6377;
+    --faint: #8A91A3;
+    --accent: #9A6E14;
+    --accent-soft: #F0E4C8;
+    --ok: #3F7A34;
+    --warn: #A8641B;
+    --bad: #A83A2E;
+    --track-h: 792px;
+    --hour: 44px;
+    --radius: 10px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0F111A;
+      --surface: #181B25;
+      --surface-2: #1E2230;
+      --line: #2A2F3E;
+      --line-soft: #232735;
+      --text: #E7E9F1;
+      --muted: #949BAE;
+      --faint: #6E7589;
+      --accent: #D9A94A;
+      --accent-soft: #3A3018;
+      --ok: #7FBF6E;
+      --warn: #D9A94A;
+      --bad: #E0776A;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0F111A;
+    --surface: #181B25;
+    --surface-2: #1E2230;
+    --line: #2A2F3E;
+    --line-soft: #232735;
+    --text: #E7E9F1;
+    --muted: #949BAE;
+    --faint: #6E7589;
+    --accent: #D9A94A;
+    --accent-soft: #3A3018;
+    --ok: #7FBF6E;
+    --warn: #D9A94A;
+    --bad: #E0776A;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 15px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+  button, input, select { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 16px 64px; }
+
+  /* ---------- header ---------- */
+  header.top {
+    position: sticky; top: 0; z-index: 30;
+    background: color-mix(in oklab, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .top-in {
+    max-width: 1280px; margin: 0 auto; padding: 12px 16px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px;
+  }
+  .mark {
+    font-family: Unbounded, "IBM Plex Sans", sans-serif;
+    font-weight: 600; font-size: 15px; letter-spacing: -0.01em;
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  .mark span { color: var(--accent); }
+  nav.tabs { display: flex; gap: 2px; margin-left: auto; }
+  .tab {
+    background: none; border: 0; padding: 7px 13px; border-radius: 7px;
+    color: var(--muted); font-weight: 500; font-size: 14px;
+  }
+  .tab:hover { color: var(--text); background: var(--surface-2); }
+  .tab[aria-selected="true"] { background: var(--surface); color: var(--text); box-shadow: inset 0 0 0 1px var(--line); }
+  .tab[aria-selected="true"]::after {
+    content: ""; display: block; height: 2px; margin: 5px -4px -3px;
+    background: var(--accent); border-radius: 2px;
+  }
+  .sync { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--faint); white-space: nowrap; }
+
+  /* ---------- week bar ---------- */
+  .weekbar {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
+    padding: 18px 0 14px;
+  }
+  .wk-nav { display: flex; gap: 4px; }
+  .btn {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+    padding: 7px 12px; font-size: 14px; font-weight: 500; color: var(--text);
+  }
+  .btn:hover { border-color: var(--accent); }
+  .btn.icon { padding: 7px 11px; font-family: "IBM Plex Mono", monospace; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  :root[data-theme="dark"] .btn.primary, :root:not([data-theme="light"]) .btn.primary { color: #16130A; }
+  .btn.ghost { background: none; }
+  .wk-title { font-family: Unbounded, sans-serif; font-weight: 500; font-size: 17px; letter-spacing: -0.01em; }
+  .wk-sub { color: var(--muted); font-size: 13px; font-family: "IBM Plex Mono", monospace; }
+  .spacer { margin-left: auto; }
+
+  /* ---------- week grid ---------- */
+  .grid {
+    display: grid; grid-template-columns: 42px repeat(7, minmax(0, 1fr)); gap: 8px;
+    align-items: start;
+  }
+  .rail { position: relative; height: var(--track-h); margin-top: 44px; }
+  .rail i {
+    position: absolute; right: 6px; transform: translateY(-50%);
+    font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--faint); font-style: normal;
+  }
+  .day { min-width: 0; }
+  .day-head {
+    height: 44px; padding: 4px 8px 8px; display: flex; align-items: baseline; gap: 7px;
+    border-bottom: 1px solid var(--line);
+  }
+  .day-name { font-weight: 600; font-size: 13px; letter-spacing: 0.02em; text-transform: uppercase; }
+  .day-date { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--faint); }
+  .day-sum { margin-left: auto; font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--muted); }
+  .day.today .day-head { border-bottom-color: var(--accent); }
+  .day.today .day-name { color: var(--accent); }
+
+  .track { position: relative; height: var(--track-h); padding-top: 6px; }
+  .track::before {
+    content: ""; position: absolute; inset: 6px 0 0 0;
+    background: repeating-linear-gradient(to bottom, var(--line-soft) 0 1px, transparent 1px var(--hour));
+    pointer-events: none; border-radius: 6px;
+  }
+  .add-day {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 26px;
+    border: 1px dashed var(--line); background: none; border-radius: 7px;
+    color: var(--faint); font-size: 12px;
+  }
+  .add-day:hover { border-color: var(--accent); color: var(--accent); }
+
+  .block {
+    position: absolute; left: 0; right: 0; top: var(--top); height: var(--h);
+    background: color-mix(in oklab, var(--cat) 13%, var(--surface));
+    border: 1px solid color-mix(in oklab, var(--cat) 26%, var(--line));
+    border-left: 3px solid var(--cat);
+    border-radius: 7px; padding: 3px 6px 3px 7px; overflow: hidden;
+    display: flex; gap: 6px; align-items: flex-start; text-align: left; min-width: 0;
+  }
+  .block.flex-slot { border-left-style: dashed; }
+  .block.done { background: var(--surface-2); border-color: var(--line); }
+  .block.done .b-title { text-decoration: line-through; color: var(--muted); }
+  .tick {
+    flex: none; width: 16px; height: 16px; margin-top: 2px; padding: 0;
+    border: 1.5px solid color-mix(in oklab, var(--cat) 55%, var(--line));
+    border-radius: 5px; background: var(--surface); line-height: 1;
+    font-size: 11px; color: transparent; display: grid; place-items: center;
+  }
+  .block.done .tick { background: var(--cat); border-color: var(--cat); color: #fff; }
+  .b-open { flex: 1; min-width: 0; background: none; border: 0; padding: 0; text-align: left; }
+  .b-time { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--muted); display: block; }
+  .b-title { font-size: 12.5px; font-weight: 500; line-height: 1.25; display: block; overflow-wrap: anywhere; }
+
+  /* ---------- panels ---------- */
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .cols { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 16px; align-items: start; }
+  h2.sec {
+    font-family: Unbounded, sans-serif; font-weight: 500; font-size: 12px;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+    margin: 0 0 14px;
+  }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 16px; }
+  .tile { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 13px 15px; }
+  .tile .k { font-size: 12px; color: var(--muted); }
+  .tile .v {
+    font-family: "IBM Plex Mono", monospace; font-size: 23px; font-weight: 500;
+    font-variant-numeric: tabular-nums; margin-top: 3px; letter-spacing: -0.02em;
+  }
+  .tile .v small { font-size: 13px; color: var(--faint); font-weight: 400; }
+
+  .bars { display: flex; flex-direction: column; gap: 13px; }
+  .bar-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; }
+  .bar-name { font-size: 13.5px; font-weight: 500; display: flex; align-items: center; gap: 7px; }
+  .dot { width: 9px; height: 9px; border-radius: 3px; background: var(--cat); flex: none; }
+  .bar-num { font-family: "IBM Plex Mono", monospace; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .bar-track {
+    grid-column: 1 / -1; position: relative; height: 8px; border-radius: 4px;
+    background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line-soft);
+  }
+  .bar-fill { position: absolute; inset: 0 auto 0 0; border-radius: 4px; background: var(--cat); width: var(--w); }
+  .bar-goal { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--text); opacity: .45; left: var(--g); }
+
+  table.year { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table.year th {
+    text-align: left; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--muted); font-weight: 600; padding: 0 10px 8px; border-bottom: 1px solid var(--line);
+  }
+  table.year td { padding: 9px 10px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  table.year tr.now td { background: var(--accent-soft); }
+  table.year tr.now td:first-child { font-weight: 600; }
+  .mo { font-family: "IBM Plex Mono", monospace; white-space: nowrap; }
+  .load { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11.5px; font-weight: 500; white-space: nowrap; }
+  .load.hi { background: color-mix(in oklab, var(--bad) 18%, var(--surface)); color: var(--bad); }
+  .load.mid { background: color-mix(in oklab, var(--warn) 18%, var(--surface)); color: var(--warn); }
+  .load.low { background: color-mix(in oklab, var(--ok) 16%, var(--surface)); color: var(--ok); }
+  .load.off { background: var(--surface-2); color: var(--faint); }
+  .scroll-x { overflow-x: auto; }
+
+  /* ---------- settings ---------- */
+  .cat-row { display: grid; grid-template-columns: 34px minmax(0, 1fr) 130px 90px 34px; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line-soft); }
+  .cat-row > * { min-width: 0; }
+  .cat-row input[type="text"], .cat-row input[type="number"], .modal input, .modal select {
+    background: var(--surface-2); border: 1px solid var(--line); border-radius: 7px; padding: 7px 9px; width: 100%;
+  }
+  .cat-row input[type="color"] { width: 34px; height: 30px; padding: 2px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface-2); }
+  .hint { color: var(--muted); font-size: 13px; max-width: 62ch; }
+  .del { background: none; border: 0; color: var(--faint); font-size: 16px; }
+  .del:hover { color: var(--bad); }
+
+  /* ---------- modal ---------- */
+  .modal-bg { position: fixed; inset: 0; background: rgba(8,10,16,.5); display: grid; place-items: center; z-index: 60; padding: 16px; }
+  .modal { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; width: min(420px, 100%); box-shadow: 0 20px 50px rgba(0,0,0,.28); }
+  .modal h3 { font-family: Unbounded, sans-serif; font-weight: 500; font-size: 15px; margin: 0 0 16px; }
+  .f { display: grid; gap: 5px; margin-bottom: 12px; }
+  .f label { font-size: 12px; color: var(--muted); }
+  .f2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .modal-foot { display: flex; gap: 8px; margin-top: 18px; }
+  .chk { display: flex; align-items: center; gap: 8px; font-size: 13.5px; }
+
+  /* ---------- help ---------- */
+  .help-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; align-items: start; }
+  .help-grid .panel { height: 100%; }
+  ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: s; display: flex; flex-direction: column; gap: 12px; }
+  ol.steps li { counter-increment: s; display: grid; grid-template-columns: 24px 1fr; gap: 11px; font-size: 14px; }
+  ol.steps li::before {
+    content: counter(s); font-family: "IBM Plex Mono", monospace; font-size: 11px;
+    width: 22px; height: 22px; display: grid; place-items: center; border-radius: 6px;
+    background: var(--accent-soft); color: var(--accent); font-weight: 500;
+  }
+  ol.steps b { font-weight: 600; }
+  ul.plain { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 11px; font-size: 14px; }
+  ul.plain li { display: grid; grid-template-columns: 78px 1fr; gap: 12px; align-items: start; }
+  .sample { display: flex; align-items: center; gap: 6px; }
+  .sample i { display: block; width: 4px; height: 20px; border-radius: 2px; background: var(--accent); font-style: normal; }
+  .sample i.dash { background: repeating-linear-gradient(to bottom, var(--accent) 0 4px, transparent 4px 8px); }
+  .sample s { width: 16px; height: 16px; border-radius: 5px; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 10px; text-decoration: none; }
+  .sample s.off { background: none; box-shadow: inset 0 0 0 1.5px var(--line); }
+  .num { font-family: "IBM Plex Mono", monospace; font-size: 12.5px; color: var(--muted); }
+  .rules { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 9px; font-size: 14px; }
+  .rules li::marker { color: var(--accent); }
+
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; gap: 0; }
+    .rail { display: none; }
+    .day { border-bottom: 1px solid var(--line-soft); padding-bottom: 10px; margin-bottom: 10px; }
+    .day-head { height: auto; border-bottom: 0; padding: 10px 2px 6px; }
+    .track { height: auto !important; padding-top: 0; display: flex; flex-direction: column; gap: 6px; }
+    .track::before { display: none; }
+    .block { position: static; height: auto !important; min-height: 40px; padding: 7px 10px; align-items: center; }
+    .b-time { display: inline; margin-right: 8px; }
+    .b-title { display: inline; }
+    .add-day { position: static; height: 30px; }
+    .cols { grid-template-columns: 1fr; }
+    .cat-row { grid-template-columns: 34px minmax(0, 1fr) 34px; gap: 8px; padding: 12px 0; }
+    .cat-row > :nth-child(5) { grid-column: 3; grid-row: 1; }
+    .cat-row > :nth-child(3), .cat-row > :nth-child(4) { grid-column: 2 / 4; }
+  }
+  .f input { background: var(--surface-2); border: 1px solid var(--line); border-radius: 7px;
+    padding: 8px 10px; width: 100%; font-family: "IBM Plex Mono", monospace; font-size: 13px; }
+  .panel .f { max-width: 560px; }
+  .row-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .ok-note { color: var(--ok); font-size: 13px; }
+
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="mark">Каркас <span>года</span></div>
+    <nav class="tabs" role="tablist" id="tabs"></nav>
+    <div class="sync" id="sync">·</div>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+<div id="modal-root"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var DAYS = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+  var DAY_FULL = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"];
+  var MONTHS = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+  var START_H = 6, END_H = 24, PX_H = 44;
+
+  var DEFAULT_CATS = [
+    { id: "op",    name: "Максимум · поток",      short: "Поток",         color: "#6E7B96", target: 40 },
+    { id: "mgmt",  name: "Максимум · управление", short: "Управление",    color: "#2C6BC4", target: 2 },
+    { id: "auto",  name: "Автоматизация с Claude", short: "Claude", color: "#1F7A6B", target: 2 },
+    { id: "china", name: "MAX-China",             short: "Китай",         color: "#C0522C", target: 4 },
+    { id: "study", name: "Вуз",                   short: "Вуз",           color: "#6B4CB8", target: 10 },
+    { id: "gym",   name: "Спорт",                 short: "Спорт",         color: "#4C8C3F", target: 3 },
+    { id: "plan",  name: "Планирование",          short: "План",          color: "#A8791F", target: 1 }
+  ];
+
+  var T = function (day, start, dur, cat, title, anchor) {
+    return { day: day, start: start, dur: dur, cat: cat, title: title, anchor: !!anchor };
+  };
+  var DEFAULT_TEMPLATE = [
+    T(0, "10:00", 60, "mgmt", "Цифры филиала", true),
+    T(0, "11:00", 480, "op", "Офис · поток"),
+    T(0, "20:00", 60, "gym", "Зал", true),
+    T(1, "11:00", 480, "op", "Офис · поток"),
+    T(1, "20:00", 60, "china", "Созвон по Китаю"),
+    T(1, "21:30", 90, "study", "Вуз · лекции"),
+    T(2, "11:00", 480, "op", "Офис · поток"),
+    T(2, "20:00", 60, "gym", "Зал", true),
+    T(2, "21:00", 60, "auto", "Автоматизация с Claude"),
+    T(3, "11:00", 480, "op", "Офис · поток"),
+    T(3, "20:00", 60, "auto", "Автоматизация с Claude"),
+    T(3, "21:30", 90, "study", "Вуз · практика"),
+    T(4, "11:00", 480, "op", "Офис · поток"),
+    T(4, "20:00", 60, "gym", "Зал", true),
+    T(5, "12:00", 60, "mgmt", "Созвон с сотрудниками", true),
+    T(5, "14:00", 180, "china", "MAX-China · блок"),
+    T(5, "19:00", 300, "study", "Пары в вузе", true),
+    T(6, "12:00", 120, "study", "Вуз · самостоятельно"),
+    T(6, "20:00", 40, "plan", "Разбор недели", true)
+  ];
+
+  var YEAR = [
+    { m: 8,  work: "hi",  china: "low", study: "low", main: "Пик сезона. Выжить и не сорвать сон" },
+    { m: 9,  work: "hi",  china: "mid", study: "mid", main: "Наладить сам ритм недели" },
+    { m: 10, work: "hi",  china: "mid", study: "mid", main: "Первые пять статей в блоге" },
+    { m: 11, work: "mid", china: "mid", study: "hi",  main: "Закрыть хвосты по учёбе до Нового года" },
+    { m: 0,  work: "low", china: "off", study: "hi",  main: "Сессия. После неё — неделя отдыха" },
+    { m: 1,  work: "low", china: "hi",  study: "mid", main: "Главное окно года: ДОДы по Китаю, контент" },
+    { m: 2,  work: "mid", china: "hi",  study: "mid", main: "Воронка по Китаю должна заработать" },
+    { m: 3,  work: "hi",  china: "low", study: "hi",  main: "Не набирать новых обязательств" },
+    { m: 4,  work: "hi",  china: "low", study: "hi",  main: "Продажи плюс подготовка к экзаменам" },
+    { m: 5,  work: "hi",  china: "off", study: "hi",  main: "Сессия и пик. Ничего нового не начинать" },
+    { m: 6,  work: "mid", china: "low", study: "off", main: "Разбор претензий. Настоящий отпуск" },
+    { m: 7,  work: "hi",  china: "off", study: "off", main: "Подготовка к сезону. Только Максимум" }
+  ];
+  var LOAD_LABEL = { hi: "Пик", mid: "Средне", low: "Спокойно", off: "Пауза" };
+  var MONTH_NAME = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+
+  // ---------- state ----------
+  var state = {
+    tab: "week",
+    settings: { categories: clone(DEFAULT_CATS), template: clone(DEFAULT_TEMPLATE) },
+    weeks: {},
+    monday: mondayOf(new Date()),
+    editing: null
+  };
+  var db = null;
+  var unsubWeek = null;
+
+  function clone(x) { return JSON.parse(JSON.stringify(x)); }
+  function uid() { return Math.random().toString(36).slice(2, 9); }
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+  function mins(hhmm) { var p = String(hhmm).split(":"); return (+p[0]) * 60 + (+p[1] || 0); }
+  function hhmm(m) { m = Math.max(0, Math.min(24 * 60 - 1, m)); return pad(Math.floor(m / 60)) + ":" + pad(m % 60); }
+  function addDays(d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; }
+  function mondayOf(d) { var x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); var w = (x.getDay() + 6) % 7; return addDays(x, -w); }
+  function sameDay(a, b) { return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
+  function weekKey(monday) {
+    var d = new Date(Date.UTC(monday.getFullYear(), monday.getMonth(), monday.getDate()));
+    d.setUTCDate(d.getUTCDate() + 3);
+    var first = new Date(Date.UTC(d.getUTCFullYear(), 0, 4));
+    first.setUTCDate(first.getUTCDate() - ((first.getUTCDay() + 6) % 7) + 3);
+    var w = 1 + Math.round((d - first) / 604800000);
+    return d.getUTCFullYear() + "-W" + pad(w);
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function catOf(id) {
+    var cs = state.settings.categories;
+    for (var i = 0; i < cs.length; i++) if (cs[i].id === id) return cs[i];
+    return { id: id, name: "Без направления", short: "—", color: "#8A91A3", target: 0 };
+  }
+  function fmtH(m) {
+    var h = m / 60;
+    return (Math.round(h * 10) / 10).toString().replace(".", ",");
+  }
+
+  // ---------- storage & sync ----------
+  var LS = "karkas-goda-v1";
+  var LS_SYNC = "karkas-sync-v1";
+  var sync = { url: "", key: "", space: "" };
+  var pushTimer = null;
+
+  function setSync(text) { document.getElementById("sync").textContent = text; }
+
+  function loadSyncCfg() {
+    try {
+      var raw = localStorage.getItem(LS_SYNC);
+      if (raw) { var c = JSON.parse(raw); sync.url = c.url || ""; sync.key = c.key || ""; sync.space = c.space || ""; }
+    } catch (e) { /* приватный режим */ }
+  }
+  function saveSyncCfg() {
+    try { localStorage.setItem(LS_SYNC, JSON.stringify(sync)); } catch (e) { /* приватный режим */ }
+  }
+  function syncReady() { return !!(sync.url && sync.key && sync.space); }
+
+  function snapshotData() { return { settings: state.settings, weeks: state.weeks, updated: Date.now() }; }
+
+  function saveLocal() {
+    try { localStorage.setItem(LS, JSON.stringify(snapshotData())); }
+    catch (e) { /* приватный режим — работаем без запасной копии */ }
+  }
+  function localUpdated() {
+    try { return JSON.parse(localStorage.getItem(LS) || "{}").updated || 0; } catch (e) { return 0; }
+  }
+  function loadLocal() {
+    try {
+      var raw = localStorage.getItem(LS);
+      if (!raw) return;
+      var d = JSON.parse(raw);
+      if (d.settings && d.settings.categories && d.settings.categories.length) state.settings = d.settings;
+      if (d.weeks) state.weeks = d.weeks;
+    } catch (e) { /* повреждённая копия — стартуем с дефолтов */ }
+  }
+
+  function api(pathPart, opts) {
+    opts = opts || {};
+    opts.headers = Object.assign({
+      apikey: sync.key,
+      Authorization: "Bearer " + sync.key,
+      "Content-Type": "application/json"
+    }, opts.headers || {});
+    return fetch(sync.url.replace(/\/+$/, "") + "/rest/v1/" + pathPart, opts);
+  }
+
+  function pushRemote() {
+    if (!syncReady()) return;
+    var body = [{ id: sync.space, payload: snapshotData(), updated_at: new Date().toISOString() }];
+    api("karkas", {
+      method: "POST",
+      headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
+      body: JSON.stringify(body)
+    }).then(function (r) {
+      setSync(r.ok ? "синхронизировано" : "сервер ответил " + r.status);
+    }).catch(function () { setSync("нет связи, сохранено на устройстве"); });
+  }
+
+  function pullRemote(force) {
+    if (!syncReady()) { setSync("только на этом устройстве"); return; }
+    setSync("проверяю…");
+    api("karkas?id=eq." + encodeURIComponent(sync.space) + "&select=payload", {})
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (rows) {
+        if (!rows.length || !rows[0].payload) { setSync("синхронизировано"); pushRemote(); return; }
+        var p = rows[0].payload;
+        if (force || (p.updated || 0) > localUpdated()) {
+          if (p.settings && p.settings.categories && p.settings.categories.length) state.settings = p.settings;
+          if (p.weeks) state.weeks = p.weeks;
+          saveLocal();
+          render();
+        }
+        setSync("синхронизировано");
+      })
+      .catch(function (st) { setSync("нет связи" + (st ? " (" + st + ")" : "")); });
+  }
+
+  function schedulePush() {
+    saveLocal();
+    if (!syncReady()) { setSync("только на этом устройстве"); return; }
+    if (pushTimer) clearTimeout(pushTimer);
+    setSync("сохраняю…");
+    pushTimer = setTimeout(pushRemote, 900);
+  }
+
+  function saveSettings() { schedulePush(); }
+  function saveWeek() { schedulePush(); }
+  function watchWeek() { /* неделя приходит целиком при синхронизации */ }
+
+  function connect() {
+    if (syncReady()) {
+      pullRemote(false);
+      setInterval(function () {
+        if (syncReady() && document.visibilityState === "visible") pullRemote(false);
+      }, 60000);
+      document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "visible" && syncReady()) pullRemote(false);
+      });
+    } else {
+      setSync("только на этом устройстве");
+    }
+  }
+
+  // ---------- week data ----------
+  function blocksOf(monday) {
+    var key = weekKey(monday);
+    if (!state.weeks[key]) {
+      state.weeks[key] = state.settings.template.map(function (b) {
+        return { id: uid(), day: b.day, start: b.start, dur: b.dur, cat: b.cat, title: b.title, anchor: !!b.anchor, done: false };
+      });
+      saveWeek(key);
+    }
+    return state.weeks[key];
+  }
+  function updateWeek(fn) {
+    var key = weekKey(state.monday);
+    var arr = blocksOf(state.monday);
+    fn(arr);
+    state.weeks[key] = arr;
+    saveWeek(key);
+    render();
+  }
+  function totals(monday) {
+    var res = {};
+    state.settings.categories.forEach(function (c) { res[c.id] = { plan: 0, fact: 0 }; });
+    blocksOf(monday).forEach(function (b) {
+      if (!res[b.cat]) res[b.cat] = { plan: 0, fact: 0 };
+      res[b.cat].plan += b.dur;
+      if (b.done) res[b.cat].fact += b.dur;
+    });
+    return res;
+  }
+
+  // ---------- render ----------
+  var app = document.getElementById("app");
+
+  function render() {
+    renderTabs();
+    if (state.tab === "week") app.innerHTML = viewWeek();
+    else if (state.tab === "balance") app.innerHTML = viewBalance();
+    else if (state.tab === "year") app.innerHTML = viewYear();
+    else if (state.tab === "help") app.innerHTML = viewHelp();
+    else app.innerHTML = viewSettings();
+    renderModal();
+    if (state.tab === "balance") drawWheel();
+  }
+
+  function renderTabs() {
+    var tabs = [["week", "Неделя"], ["balance", "Баланс"], ["year", "Год"], ["settings", "Настройки"], ["help", "Как работать"]];
+    document.getElementById("tabs").innerHTML = tabs.map(function (t) {
+      return '<button class="tab" role="tab" data-tab="' + t[0] + '" aria-selected="' + (state.tab === t[0]) + '">' + t[1] + "</button>";
+    }).join("");
+  }
+
+  function viewWeek() {
+    var monday = state.monday;
+    var blocks = blocksOf(monday);
+    var today = new Date();
+    var end = addDays(monday, 6);
+    var title = monday.getDate() + " " + MONTHS[monday.getMonth()] + " — " + end.getDate() + " " + MONTHS[end.getMonth()];
+
+    var rail = "";
+    for (var h = START_H; h <= END_H; h++) {
+      rail += '<i style="top:' + ((h - START_H) * PX_H + 6) + 'px">' + pad(h % 24) + "</i>";
+    }
+
+    var cols = "";
+    for (var d = 0; d < 7; d++) {
+      var date = addDays(monday, d);
+      var list = blocks.filter(function (b) { return b.day === d; })
+        .sort(function (a, b) { return mins(a.start) - mins(b.start); });
+      var sum = list.reduce(function (s, b) { return s + b.dur; }, 0);
+      var doneSum = list.reduce(function (s, b) { return s + (b.done ? b.dur : 0); }, 0);
+
+      cols += '<div class="day' + (sameDay(date, today) ? " today" : "") + '">' +
+        '<div class="day-head"><span class="day-name">' + DAYS[d] + '</span>' +
+        '<span class="day-date">' + date.getDate() + "." + pad(date.getMonth() + 1) + "</span>" +
+        '<span class="day-sum">' + fmtH(doneSum) + "/" + fmtH(sum) + " ч</span></div>" +
+        '<div class="track">' + list.map(blockHTML).join("") +
+        '<button class="add-day" data-add="' + d + '">+ блок</button></div></div>';
+    }
+
+    return '<div class="weekbar">' +
+      '<div class="wk-nav"><button class="btn icon" data-nav="-1" aria-label="Предыдущая неделя">←</button>' +
+      '<button class="btn icon" data-nav="1" aria-label="Следующая неделя">→</button>' +
+      '<button class="btn ghost" data-nav="0">Сегодня</button></div>' +
+      '<div><div class="wk-title">' + esc(title) + '</div>' +
+      '<div class="wk-sub">' + weekKey(monday) + "</div></div>" +
+      '<div class="spacer"></div>' +
+      '<button class="btn" data-act="fill">Собрать по шаблону</button>' +
+      '<button class="btn" data-act="clear-done">Снять галочки</button>' +
+      "</div>" +
+      '<div class="grid"><div class="rail">' + rail + "</div>" + cols + "</div>";
+  }
+
+  function blockHTML(b) {
+    var c = catOf(b.cat);
+    var top = (mins(b.start) - START_H * 60) / 60 * PX_H + 6;
+    var h = Math.max(26, b.dur / 60 * PX_H - 3);
+    return '<div class="block' + (b.done ? " done" : "") + (b.anchor ? "" : " flex-slot") + '"' +
+      ' style="--top:' + Math.max(6, top) + "px;--h:" + h + "px;--cat:" + c.color + '">' +
+      '<button class="tick" data-tick="' + b.id + '" aria-pressed="' + !!b.done + '" aria-label="Отметить: ' + esc(b.title) + '">✓</button>' +
+      '<button class="b-open" data-edit="' + b.id + '">' +
+      '<span class="b-time">' + b.start + "</span>" +
+      '<span class="b-title">' + esc(b.title) + "</span></button></div>";
+  }
+
+  function viewBalance() {
+    var t = totals(state.monday);
+    var cats = state.settings.categories;
+    var blocks = blocksOf(state.monday);
+    var doneN = blocks.filter(function (b) { return b.done; }).length;
+
+    var tiles = [];
+    ["study", "china", "auto", "gym"].forEach(function (id) {
+      var c = cats.filter(function (x) { return x.id === id; })[0];
+      if (!c) return;
+      var f = (t[id] || { fact: 0 }).fact;
+      tiles.push('<div class="tile"><div class="k">' + esc(c.name) + '</div><div class="v">' + fmtH(f) + ' <small>из ' + String(c.target).replace(".", ",") + " ч</small></div></div>");
+    });
+    tiles.push('<div class="tile"><div class="k">Слотов выполнено</div><div class="v">' + doneN + " <small>из " + blocks.length + "</small></div></div>");
+
+    var bars = cats.map(function (c) {
+      var v = t[c.id] || { plan: 0, fact: 0 };
+      var goal = c.target * 60;
+      var max = Math.max(goal, v.plan, v.fact, 1);
+      return '<div class="bar-row" style="--cat:' + c.color + '">' +
+        '<div class="bar-name"><span class="dot"></span>' + esc(c.name) + "</div>" +
+        '<div class="bar-num">' + fmtH(v.fact) + " / " + fmtH(v.plan) + " ч · цель " + String(c.target).replace(".", ",") + "</div>" +
+        '<div class="bar-track"><div class="bar-fill" style="--w:' + (v.fact / max * 100) + '%"></div>' +
+        (goal > 0 ? '<div class="bar-goal" style="--g:' + (goal / max * 100) + '%"></div>' : "") +
+        "</div></div>";
+    }).join("");
+
+    return '<div class="weekbar"><div class="wk-title">Баланс недели</div>' +
+      '<div class="wk-sub">' + weekKey(state.monday) + "</div></div>" +
+      '<div class="tiles">' + tiles.join("") + "</div>" +
+      '<div class="cols">' +
+      '<section class="panel"><h2 class="sec">Колесо баланса</h2>' +
+      '<svg id="wheel" viewBox="0 0 440 340" width="100%" role="img" aria-label="Колесо баланса: факт против цели по направлениям"></svg>' +
+      '<p class="hint" style="margin:6px 0 0">Пунктирное кольцо — цель на неделю, тонкий контур — сколько запланировано, ' +
+      "заливка — то, что реально отмечено сделанным.</p>" +
+      "</section>" +
+      '<section class="panel"><h2 class="sec">Почасовка</h2><div class="bars">' + bars + "</div></section>" +
+      "</div>";
+  }
+
+  function drawWheel() {
+    var svg = document.getElementById("wheel");
+    if (!svg) return;
+    var cats = state.settings.categories.filter(function (c) { return c.target > 0; });
+    if (cats.length < 3) { svg.innerHTML = '<text x="200" y="170" text-anchor="middle" fill="var(--muted)" font-size="14">Нужно хотя бы три направления с целью</text>'; return; }
+    var t = totals(state.monday);
+    var cx = 220, cy = 168, R = 108, CAP = 1.25;
+    var n = cats.length, out = "";
+
+    [0.5, 1].forEach(function (ring) {
+      var pts = [];
+      for (var i = 0; i < n; i++) {
+        var a = -Math.PI / 2 + i * 2 * Math.PI / n, r = R * ring / CAP;
+        pts.push((cx + r * Math.cos(a)).toFixed(1) + "," + (cy + r * Math.sin(a)).toFixed(1));
+      }
+      out += '<polygon points="' + pts.join(" ") + '" fill="none" stroke="var(--line)" stroke-width="1"' +
+        (ring === 1 ? ' stroke-dasharray="4 3" stroke-opacity="0.9"' : ' stroke-opacity="0.6"') + "/>";
+    });
+
+    var poly = [], planPoly = [];
+    for (var i = 0; i < n; i++) {
+      var a = -Math.PI / 2 + i * 2 * Math.PI / n;
+      var ex = cx + R / CAP * Math.cos(a), ey = cy + R / CAP * Math.sin(a);
+      out += '<line x1="' + cx + '" y1="' + cy + '" x2="' + ex.toFixed(1) + '" y2="' + ey.toFixed(1) + '" stroke="var(--line)" stroke-width="1" stroke-opacity="0.7"/>';
+      var v = t[cats[i].id] || { fact: 0, plan: 0 };
+      var tgt = cats[i].target > 0 ? cats[i].target : 1;
+      var rf = R * Math.min(CAP, v.fact / 60 / tgt) / CAP;
+      var rp = R * Math.min(CAP, v.plan / 60 / tgt) / CAP;
+      poly.push([cx + rf * Math.cos(a), cy + rf * Math.sin(a)]);
+      planPoly.push([cx + rp * Math.cos(a), cy + rp * Math.sin(a)]);
+    }
+    var pts = function (p) { return p.map(function (q) { return q[0].toFixed(1) + "," + q[1].toFixed(1); }).join(" "); };
+    out += '<polygon points="' + pts(planPoly) + '" fill="none" stroke="var(--muted)" stroke-width="1.4" stroke-opacity="0.75" stroke-linejoin="round"/>';
+    out += '<polygon points="' + pts(poly) +
+      '" fill="var(--accent)" fill-opacity="0.20" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>';
+
+    for (var j = 0; j < n; j++) {
+      out += '<circle cx="' + poly[j][0].toFixed(1) + '" cy="' + poly[j][1].toFixed(1) + '" r="4" fill="' + cats[j].color + '"/>';
+      var a2 = -Math.PI / 2 + j * 2 * Math.PI / n;
+      var lx = cx + (R + 22) * Math.cos(a2), ly = cy + (R + 22) * Math.sin(a2);
+      var anchor = Math.abs(Math.cos(a2)) < 0.25 ? "middle" : (Math.cos(a2) > 0 ? "start" : "end");
+      var vv = t[cats[j].id] || { fact: 0 };
+      var pct = cats[j].target > 0 ? Math.round(vv.fact / 60 / cats[j].target * 100) : 0;
+      out += '<text x="' + lx.toFixed(1) + '" y="' + (ly + 4).toFixed(1) + '" text-anchor="' + anchor + '" font-size="11.5" font-weight="500" fill="var(--text)">' + esc(cats[j].short || cats[j].name) + "</text>";
+      out += '<text x="' + lx.toFixed(1) + '" y="' + (ly + 17).toFixed(1) + '" text-anchor="' + anchor + '" font-size="10.5" font-family="IBM Plex Mono, monospace" fill="var(--muted)">' + pct + "%</text>";
+    }
+    svg.innerHTML = out;
+  }
+
+  function viewYear() {
+    var nowM = new Date().getMonth();
+    var rows = YEAR.map(function (r) {
+      return '<tr class="' + (r.m === nowM ? "now" : "") + '">' +
+        '<td class="mo">' + MONTH_NAME[r.m] + "</td>" +
+        '<td><span class="load ' + r.work + '">' + LOAD_LABEL[r.work] + "</span></td>" +
+        '<td><span class="load ' + r.china + '">' + LOAD_LABEL[r.china] + "</span></td>" +
+        '<td><span class="load ' + r.study + '">' + LOAD_LABEL[r.study] + "</span></td>" +
+        "<td>" + esc(r.main) + "</td></tr>";
+    }).join("");
+
+    return '<div class="weekbar"><div class="wk-title">Год по сезонам</div></div>' +
+      '<section class="panel"><p class="hint" style="margin:0 0 16px">Учёба и Китай растут тогда, когда падают продажи, и наоборот. ' +
+      "Декабрь-март — единственное окно года, когда можно строить, а не тушить.</p>" +
+      '<div class="scroll-x"><table class="year"><thead><tr>' +
+      "<th>Месяц</th><th>Максимум</th><th>MAX-China</th><th>Вуз</th><th>Главное</th>" +
+      "</tr></thead><tbody>" + rows + "</tbody></table></div></section>";
+  }
+
+  function viewSettings() {
+    var rows = state.settings.categories.map(function (c, i) {
+      return '<div class="cat-row">' +
+        '<input type="color" value="' + c.color + '" data-cat="' + i + '" data-field="color" aria-label="Цвет направления">' +
+        '<input type="text" value="' + esc(c.name) + '" data-cat="' + i + '" data-field="name" aria-label="Название направления">' +
+        '<input type="text" value="' + esc(c.short || "") + '" data-cat="' + i + '" data-field="short" aria-label="Короткое имя для колеса" placeholder="в колесе">' +
+        '<input type="number" step="0.5" min="0" value="' + c.target + '" data-cat="' + i + '" data-field="target" aria-label="Цель, часов в неделю">' +
+        '<button class="del" data-del-cat="' + i + '" aria-label="Удалить направление">×</button></div>';
+    }).join("");
+
+    return '<div class="weekbar"><div class="wk-title">Настройки</div></div>' +
+      '<section class="panel" style="margin-bottom:16px"><h2 class="sec">Направления и цели, часов в неделю</h2>' +
+      rows +
+      '<div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">' +
+      '<button class="btn" data-act="add-cat">+ Направление</button></div>' +
+      '<p class="hint" style="margin-top:12px">Цель — сколько часов в неделю ты хочешь отдавать направлению. ' +
+      "Из этих чисел считается колесо баланса. Если MAX-China ужимается, а автоматизация растёт — меняй цифры здесь, всё пересчитается.</p>" +
+      "</section>" +
+      '<section class="panel" style="margin-bottom:16px"><h2 class="sec">Синхронизация между устройствами</h2>' +
+      '<p class="hint" style="margin:0 0 14px">Без этих трёх строк приложение работает, но данные живут только на этом устройстве. ' +
+      "Заполнишь — телефон и компьютер начнут видеть одно и то же. Инструкция во вкладке «Как работать».</p>" +
+      '<div class="f"><label for="s-url">Адрес проекта Supabase</label>' +
+      '<input id="s-url" type="text" value="' + esc(sync.url) + '" placeholder="https://xxxxxxxx.supabase.co" spellcheck="false"></div>' +
+      '<div class="f"><label for="s-key">Публичный ключ anon</label>' +
+      '<input id="s-key" type="text" value="' + esc(sync.key) + '" placeholder="eyJhbGciOi…" spellcheck="false"></div>' +
+      '<div class="f"><label for="s-space">Код пространства — придумай сам, одинаковый на всех устройствах</label>' +
+      '<input id="s-space" type="text" value="' + esc(sync.space) + '" placeholder="moy-karkas-2026" spellcheck="false"></div>' +
+      '<div class="row-btns"><button class="btn primary" data-act="save-sync">Сохранить и подключить</button>' +
+      '<button class="btn" data-act="pull">Забрать данные с сервера</button></div>' +
+      "</section>" +
+
+      '<section class="panel" style="margin-bottom:16px"><h2 class="sec">Перенос вручную</h2>' +
+      '<p class="hint" style="margin:0">Работает всегда, даже без интернета и без базы. Выгрузи файл на одном устройстве и загрузи на другом.</p>' +
+      '<div class="row-btns"><button class="btn" data-act="export">Выгрузить файл</button>' +
+      '<button class="btn" data-act="import">Загрузить файл</button>' +
+      '<input type="file" id="imp" accept="application/json,.json" style="display:none"></div>' +
+      "</section>" +
+
+      '<section class="panel"><h2 class="sec">Шаблон недели</h2>' +
+      '<p class="hint">Шаблон — эталонная неделя, из которой собирается каждая новая. Сейчас в нём ' + state.settings.template.length + " блоков.</p>" +
+      '<div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">' +
+      '<button class="btn" data-act="save-template">Сохранить текущую неделю как шаблон</button>' +
+      '<button class="btn ghost" data-act="reset-template">Вернуть исходный шаблон</button></div>' +
+      "</section>";
+  }
+
+  function viewHelp() {
+    return '<div class="weekbar"><div class="wk-title">Как с этим работать</div>' +
+      '<div class="wk-sub">две минуты чтения</div></div>' +
+
+      '<section class="panel" style="margin-bottom:16px">' +
+      '<p class="hint" style="margin:0;max-width:70ch">Приложение не планирует за тебя. Оно делает три вещи: ' +
+      "держит на месте якоря, показывает, куда на самом деле ушла неделя, и не даёт учёбе с Китаем " +
+      "потеряться под потоком Максимума. Всё остальное — поток, его планировать бессмысленно.</p></section>" +
+
+      '<div class="help-grid">' +
+
+      '<section class="panel"><h2 class="sec">Каждый день · 30 секунд</h2><ol class="steps">' +
+      "<li><b>Утром открой «Неделя».</b> Посмотри, какие якоря стоят на сегодня. Больше ничего решать не надо.</li>" +
+      "<li><b>Сделал блок — нажми галочку.</b> Это единственное ежедневное действие. Часы посчитаются сами.</li>" +
+      "<li><b>Пришло расписание ШП?</b> Нажми «+ блок» в нужном дне и внеси его сразу, пока не забыл.</li>" +
+      "<li><b>Что-то не влезло —</b> открой блок и перенеси на другой день. Слот переносится, а не исчезает.</li>" +
+      "</ol></section>" +
+
+      '<section class="panel"><h2 class="sec">Воскресенье, 20:00 · 40 минут</h2><ol class="steps">' +
+      "<li><b>Открой «Баланс».</b> Где заливка не дотянула до контура — там неделя ушла в поток.</li>" +
+      "<li><b>Ответь на четыре вопроса:</b> что сделал, что не сделал и почему, что главное на следующей неделе, где в ней дырки под ШП.</li>" +
+      "<li><b>Стрелка вправо, «Собрать по шаблону».</b> Новая неделя соберётся из эталонной.</li>" +
+      "<li><b>Расставь известные события</b> — ДОД, родительское собрание, консультации — и подвинь под них слоты.</li>" +
+      "</ol></section>" +
+
+      '<section class="panel"><h2 class="sec">Что означают элементы</h2><ul class="plain">' +
+      '<li><span class="sample"><i></i></span><span><b>Сплошная полоса слева — якорь.</b> Не двигается. Если снесли — переносится внутри той же недели, а не отменяется.</span></li>' +
+      '<li><span class="sample"><i class="dash"></i></span><span><b>Пунктир — плавающий слот.</b> Двигается свободно, важно только общее количество за неделю.</span></li>' +
+      '<li><span class="sample"><s class="off">✓</s><s>✓</s></span><span><b>Галочка — факт.</b> Пустая — план, закрашенная — сделано. Из закрашенных считается всё остальное.</span></li>' +
+      '<li><span class="num">0/9 ч</span><span><b>Цифры в шапке дня</b> — сделано из запланированного.</span></li>' +
+      '<li><span class="num">Цель</span><span><b>В настройках</b> у каждого направления своя цель часов в неделю. Из неё строится колесо. Меняются приоритеты — меняй цифру, не расписание.</span></li>' +
+      "</ul></section>" +
+
+      '<section class="panel"><h2 class="sec">На другом устройстве</h2>' +
+      '<p class="hint" style="margin:0 0 14px">Никакого входа не нужно: открыл ссылку — приложение работает. ' +
+      "На телефоне добавь страницу на домашний экран, дальше запускается как обычное приложение.</p>" +
+      '<p class="hint" style="margin:0 0 10px"><b>Чтобы устройства видели одни и те же галочки</b>, нужно один раз подключить бесплатное хранилище:</p>' +
+      '<ol class="steps">' +
+      "<li>Заведи бесплатный проект на supabase.com — почта и пароль, карта не нужна.</li>" +
+      "<li>В разделе SQL Editor выполни запрос, который лежит в файле <b>nastroyka-bazy.txt</b> рядом с этой страницей. Он создаёт таблицу для данных.</li>" +
+      "<li>В разделе Settings → API скопируй <b>Project URL</b> и ключ <b>anon public</b>.</li>" +
+      "<li>Вставь их в «Настройки → Синхронизация», придумай код пространства и нажми «Сохранить и подключить».</li>" +
+      "<li>На втором устройстве введи те же три значения — данные подтянутся сами.</li>" +
+      "</ol>" +
+      '<p class="hint" style="margin:14px 0 0">Надпись в правом верхнем углу показывает состояние: «синхронизировано» — всё уехало на сервер, ' +
+      "«только на этом устройстве» — хранилище ещё не подключено, данные лежат в браузере. " +
+      "Пока не подключил — пользуйся кнопкой «Выгрузить файл» в настройках, это надёжный запасной путь.</p></section>" +
+
+      '<section class="panel"><h2 class="sec">Пять правил каркаса</h2><ol class="rules">' +
+      "<li><b>Правило ШП.</b> Расписание пришло — сразу в приложение, до всего остального. Потом пересборка недели за десять минут.</li>" +
+      "<li><b>Три задачи в день.</b> Не пять и не двенадцать. Остальное — поток.</li>" +
+      "<li><b>Дорога — это учёба.</b> Сорок минут в автобусе десять раз в неделю равны всей самостоятельной работе по вузу.</li>" +
+      "<li><b>Два полудня пустые.</b> Буфер под ШП. Не случилось — уходит в учёбу или Китай.</li>" +
+      "<li><b>Вечер пятницы и утро воскресенья не занимать.</b> Это условие дожить до июня, а не награда.</li>" +
+      "</ol></section>" +
+
+      "</div>";
+  }
+
+  function renderModal() {
+    var root = document.getElementById("modal-root");
+    if (!state.editing) { root.innerHTML = ""; return; }
+    var b = state.editing;
+    var opts = state.settings.categories.map(function (c) {
+      return '<option value="' + c.id + '"' + (c.id === b.cat ? " selected" : "") + ">" + esc(c.name) + "</option>";
+    }).join("");
+    var dayOpts = DAY_FULL.map(function (d, i) {
+      return '<option value="' + i + '"' + (i === b.day ? " selected" : "") + ">" + d + "</option>";
+    }).join("");
+
+    root.innerHTML = '<div class="modal-bg" data-close="1"><div class="modal" role="dialog" aria-modal="true">' +
+      "<h3>" + (b.isNew ? "Новый блок" : "Блок недели") + "</h3>" +
+      '<div class="f"><label for="m-title">Название</label><input id="m-title" type="text" value="' + esc(b.title) + '"></div>' +
+      '<div class="f"><label for="m-cat">Направление</label><select id="m-cat">' + opts + "</select></div>" +
+      '<div class="f2"><div class="f"><label for="m-day">День</label><select id="m-day">' + dayOpts + "</select></div>" +
+      '<div class="f"><label for="m-start">Начало</label><input id="m-start" type="time" value="' + b.start + '"></div></div>' +
+      '<div class="f"><label for="m-dur">Длительность, минут</label><input id="m-dur" type="number" min="10" step="10" value="' + b.dur + '"></div>' +
+      '<label class="chk"><input type="checkbox" id="m-anchor"' + (b.anchor ? " checked" : "") + "> Якорь — не двигается внутри недели</label>" +
+      '<div class="modal-foot"><button class="btn primary" data-act="save-block">Сохранить</button>' +
+      '<button class="btn ghost" data-close="1">Отмена</button>' +
+      (b.isNew ? "" : '<button class="btn ghost del" style="margin-left:auto" data-act="del-block">Удалить</button>') +
+      "</div></div></div>";
+    var el = document.getElementById("m-title");
+    if (el) el.focus();
+  }
+
+  // ---------- events ----------
+  document.getElementById("tabs").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-tab]");
+    if (!b) return;
+    state.tab = b.getAttribute("data-tab");
+    render();
+  });
+
+  document.addEventListener("click", function (e) {
+    var el;
+
+    if ((el = e.target.closest("[data-nav]"))) {
+      var n = +el.getAttribute("data-nav");
+      state.monday = n === 0 ? mondayOf(new Date()) : addDays(state.monday, n * 7);
+      watchWeek();
+      render();
+      return;
+    }
+    if ((el = e.target.closest("[data-tick]"))) {
+      var id = el.getAttribute("data-tick");
+      updateWeek(function (arr) {
+        arr.forEach(function (b) { if (b.id === id) b.done = !b.done; });
+      });
+      return;
+    }
+    if ((el = e.target.closest("[data-edit]"))) {
+      var eid = el.getAttribute("data-edit");
+      var found = blocksOf(state.monday).filter(function (b) { return b.id === eid; })[0];
+      if (found) { state.editing = Object.assign({}, found); renderModal(); }
+      return;
+    }
+    if ((el = e.target.closest("[data-add]"))) {
+      var firstCat = state.settings.categories[0] ? state.settings.categories[0].id : "op";
+      state.editing = { isNew: true, id: uid(), day: +el.getAttribute("data-add"), start: "20:00", dur: 60,
+        cat: firstCat, title: "", anchor: false, done: false };
+      renderModal();
+      return;
+    }
+    if ((el = e.target.closest("[data-close]")) && !e.target.closest("[data-act]")) {
+      if (el.classList.contains("modal-bg") && e.target !== el) return;
+      state.editing = null; renderModal(); return;
+    }
+    if ((el = e.target.closest("[data-del-cat]"))) {
+      var ci = +el.getAttribute("data-del-cat");
+      state.settings.categories.splice(ci, 1);
+      saveSettings(); render(); return;
+    }
+
+    if ((el = e.target.closest("[data-act]"))) {
+      var act = el.getAttribute("data-act");
+
+      if (act === "fill") {
+        var key = weekKey(state.monday);
+        state.weeks[key] = state.settings.template.map(function (b) {
+          return { id: uid(), day: b.day, start: b.start, dur: b.dur, cat: b.cat, title: b.title, anchor: !!b.anchor, done: false };
+        });
+        saveWeek(key); render(); return;
+      }
+      if (act === "clear-done") {
+        updateWeek(function (arr) { arr.forEach(function (b) { b.done = false; }); });
+        return;
+      }
+      if (act === "save-sync") {
+        sync.url = document.getElementById("s-url").value.trim();
+        sync.key = document.getElementById("s-key").value.trim();
+        sync.space = document.getElementById("s-space").value.trim();
+        saveSyncCfg();
+        if (syncReady()) { pullRemote(false); } else { setSync("только на этом устройстве"); }
+        return;
+      }
+      if (act === "pull") { pullRemote(true); return; }
+      if (act === "export") {
+        var blob = new Blob([JSON.stringify(snapshotData(), null, 2)], { type: "application/json" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "karkas-goda-" + new Date().toISOString().slice(0, 10) + ".json";
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+        return;
+      }
+      if (act === "import") { document.getElementById("imp").click(); return; }
+      if (act === "add-cat") {
+        state.settings.categories.push({ id: uid(), name: "Новое направление", short: "Новое", color: "#7A7F8F", target: 1 });
+        saveSettings(); render(); return;
+      }
+      if (act === "save-template") {
+        state.settings.template = blocksOf(state.monday).map(function (b) {
+          return { day: b.day, start: b.start, dur: b.dur, cat: b.cat, title: b.title, anchor: !!b.anchor };
+        });
+        saveSettings(); render(); return;
+      }
+      if (act === "reset-template") {
+        state.settings.template = clone(DEFAULT_TEMPLATE);
+        saveSettings(); render(); return;
+      }
+      if (act === "save-block") {
+        var b = state.editing;
+        var next = {
+          id: b.id,
+          day: +document.getElementById("m-day").value,
+          start: document.getElementById("m-start").value || "20:00",
+          dur: Math.max(10, +document.getElementById("m-dur").value || 60),
+          cat: document.getElementById("m-cat").value,
+          title: document.getElementById("m-title").value.trim() || "Без названия",
+          anchor: document.getElementById("m-anchor").checked,
+          done: !!b.done
+        };
+        var isNew = b.isNew;
+        state.editing = null;
+        updateWeek(function (arr) {
+          if (isNew) arr.push(next);
+          else for (var i = 0; i < arr.length; i++) if (arr[i].id === next.id) arr[i] = next;
+        });
+        return;
+      }
+      if (act === "del-block") {
+        var did = state.editing.id;
+        state.editing = null;
+        updateWeek(function (arr) {
+          for (var i = arr.length - 1; i >= 0; i--) if (arr[i].id === did) arr.splice(i, 1);
+        });
+        return;
+      }
+    }
+  });
+
+  document.addEventListener("change", function (e) {
+    if (e.target.id === "imp" && e.target.files && e.target.files[0]) {
+      var fr = new FileReader();
+      fr.onload = function () {
+        try {
+          var d = JSON.parse(fr.result);
+          if (d.settings && d.settings.categories && d.settings.categories.length) state.settings = d.settings;
+          if (d.weeks) state.weeks = d.weeks;
+          saveLocal();
+          schedulePush();
+          render();
+          setSync("загружено из файла");
+        } catch (err) { setSync("файл не читается"); }
+      };
+      fr.readAsText(e.target.files[0]);
+      e.target.value = "";
+      return;
+    }
+    var el = e.target.closest("[data-cat]");
+    if (!el) return;
+    var i = +el.getAttribute("data-cat"), f = el.getAttribute("data-field");
+    var v = f === "target" ? Math.max(0, +el.value || 0) : el.value;
+    state.settings.categories[i][f] = v;
+    saveSettings();
+    if (f === "color" || f === "target") render();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && state.editing) { state.editing = null; renderModal(); }
+  });
+
+  // ---------- boot ----------
+  document.documentElement.style.setProperty("--hour", PX_H + "px");
+  document.documentElement.style.setProperty("--track-h", ((END_H - START_H) * PX_H + 34) + "px");
+  loadLocal();
+  loadSyncCfg();
+  render();
+  connect();
+})();
+</script>
+
+</body>
+</html>
