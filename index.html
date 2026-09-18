@@ -687,6 +687,16 @@ html.lite .strip__track{width:auto;flex-direction:column;padding-inline:var(--gu
 html.lite .tile{width:100%;min-height:0;--ty:0;--tr:0deg}
 html.lite .svc-bgtext{display:none}
 
+/* кейс Софии (правки эксперта 18.09): две короткие карточки и раскрывающаяся история */
+.attempt-mini{display:grid;grid-template-columns:54px 1fr;gap:14px;align-items:center;margin-bottom:12px;padding:18px 20px;border-radius:26px}
+.case__story{display:grid;grid-template-rows:0fr;transition:grid-template-rows .7s var(--ease)}
+.case__story.is-open{grid-template-rows:1fr}
+.case__story>div{overflow:hidden}
+.case__story .attempt:first-child{margin-top:14px}
+.case__story .attempt:hover{transform:none}
+.attempt__head{display:grid;grid-template-columns:54px 1fr;gap:14px;align-items:center;padding:18px 20px}
+@media (max-width:760px){.attempt-mini,.attempt__head{grid-template-columns:40px 1fr;padding:16px}}
+
 </style>
 </head>
 <body>
@@ -779,19 +789,19 @@ html.lite .svc-bgtext{display:none}
           <canvas class="core" aria-hidden="true"></canvas>
           <button class="uni glass" type="button" aria-expanded="false" data-cursor="подробнее">
             <span class="uni__han" lang="zh">清</span>
-            <span class="uni__txt"><span class="uni__name">Цинхуа</span><span class="uni__meta">Пекин · <span lang="zh">清华大学</span></span><span class="uni__more"><span>Сильны инженерия, IT и архитектура</span></span></span>
+            <span class="uni__txt"><span class="uni__name">Цинхуа</span><span class="uni__meta">Пекин · <span lang="zh">清华大学</span></span><span class="uni__more"><span>Ведущие направления: инженерия, IT и архитектура</span></span></span>
           </button>
           <button class="uni glass" type="button" aria-expanded="false" data-cursor="подробнее">
             <span class="uni__han" lang="zh">北</span>
-            <span class="uni__txt"><span class="uni__name">Пекинский университет</span><span class="uni__meta">Пекин · <span lang="zh">北京大学</span></span><span class="uni__more"><span>Сильны экономика, медицина и гуманитарные науки</span></span></span>
+            <span class="uni__txt"><span class="uni__name">Пекинский университет</span><span class="uni__meta">Пекин · <span lang="zh">北京大学</span></span><span class="uni__more"><span>Ведущие направления: фундаментальные науки и гуманитарные науки</span></span></span>
           </button>
           <button class="uni glass" type="button" aria-expanded="false" data-cursor="подробнее">
             <span class="uni__han" lang="zh">复</span>
-            <span class="uni__txt"><span class="uni__name">Фуданьский университет</span><span class="uni__meta">Шанхай · <span lang="zh">复旦大学</span></span><span class="uni__more"><span>Сильны экономика, журналистика и медицина</span></span></span>
+            <span class="uni__txt"><span class="uni__name">Фуданьский университет</span><span class="uni__meta">Шанхай · <span lang="zh">复旦大学</span></span><span class="uni__more"><span>Ведущие направления: медицина, экономика и гуманитарные науки</span></span></span>
           </button>
           <button class="uni glass" type="button" aria-expanded="false" data-cursor="подробнее">
             <span class="uni__han" lang="zh">上</span>
-            <span class="uni__txt"><span class="uni__name">Шанхайский университет</span><span class="uni__meta">Шанхай · <span lang="zh">上海大学</span></span><span class="uni__more"><span>Сильны инженерия, дизайн и менеджмент</span></span></span>
+            <span class="uni__txt"><span class="uni__name">Шанхайский университет</span><span class="uni__meta">Шанхай · <span lang="zh">上海大学</span></span><span class="uni__more"><span>Ведущие направления: инженерия, экономика и дизайн</span></span></span>
           </button>
           <button class="uni glass" type="button" aria-expanded="false" data-cursor="подробнее">
             <span class="uni__han" lang="zh">西</span>
@@ -839,7 +849,7 @@ html.lite .svc-bgtext{display:none}
         <svg class="eco__lines" aria-hidden="true"></svg>
         <button class="node node--center glass" type="button" data-id="kid" aria-pressed="true" style="--nx:50;--ny:50;--mx2:50;--my2:52">Ученик</button>
         <button class="node glass" type="button" data-id="family" aria-pressed="false" style="--nx:15;--ny:18;--mx2:26;--my2:8"><i></i>Семья</button>
-        <button class="node glass" type="button" data-id="expert" aria-pressed="false" style="--nx:50;--ny:8;--mx2:74;--my2:8"><i></i>Эксперт в Китае</button>
+        <button class="node glass" type="button" data-id="expert" aria-pressed="false" style="--nx:50;--ny:8;--mx2:74;--my2:8"><i></i>Эксперты в Китае</button>
         <button class="node glass" type="button" data-id="manager" aria-pressed="false" style="--nx:85;--ny:20;--mx2:76;--my2:30"><i></i>Менеджер MChina</button>
         <button class="node glass" type="button" data-id="prof" aria-pressed="false" style="--nx:13;--ny:76;--mx2:24;--my2:30"><i></i>Профориентация</button>
         <button class="node glass" type="button" data-id="unis" aria-pressed="false" style="--nx:86;--ny:78;--mx2:74;--my2:80"><i></i>Вузы Китая</button>
@@ -859,22 +869,22 @@ html.lite .svc-bgtext{display:none}
         <span class="svc__tag">Выбираем</span>
         <h3>Куда поступать</h3>
         <ol>
-          <li><span>Профориентация<small>тесты и разговор с профориентологом</small></span></li>
-          <li><span>Специальность и три вуза<small>под интересы, оценки и язык ребёнка</small></span></li>
-          <li><span>Стипендии<small>государственные и университетские, с условиями и сроками</small></span></li>
+          <li><span>Профориентация<small>комплексная диагностика и консультация специалиста по профориентации</small></span></li>
+          <li><span>Специальность и три вуза<small>подбор с учётом способностей, академических результатов и уровня языка ученика</small></span></li>
+          <li><span>Стипендии<small>государственные и университетские стипендии, анализ требований и сроков подачи</small></span></li>
         </ol>
       </article>
       <article class="svc svc--b glass glass--refract" data-depth="50" data-reveal style="--rd:.12s">
         <span class="svc__tag">Поступаем</span>
         <h3>Как поступить</h3>
         <ol>
-          <li><span>Документы<small>список, проверка, перевод и апостиль</small></span></li>
-          <li><span>Заявки в вузы<small>анкеты на китайских порталах заполняет менеджер</small></span></li>
+          <li><span>Документы<small>формирование списка, проверка и перевод документов</small></span></li>
+          <li><span>Заявки в вузы<small>заполнение анкет на официальных китайских порталах менеджером</small></span></li>
           <li><span>Экзамены<small>регистрация на CSCA, HSK или Duolingo</small></span></li>
-          <li><span>Мотивационное письмо<small>правка и перевод</small></span></li>
-          <li><span>Собеседование<small>репетиция вопросов и ответов</small></span></li>
-          <li><span>Переписка с приёмной комиссией<small>на китайском, от имени семьи</small></span></li>
-          <li><span>Жизнь в Китае<small>чек-листы: WeChat, Alipay, карта, связь</small></span></li>
+          <li><span>Мотивационное письмо<small>редактирование и перевод текста</small></span></li>
+          <li><span>Собеседование<small>тренировка ответов на возможные вопросы</small></span></li>
+          <li><span>Переписка с приёмной комиссией<small>коммуникация на китайском языке от имени семьи</small></span></li>
+          <li><span>Жизнь в Китае<small>поддержка в Китае и подготовка полезных чек-листов</small></span></li>
         </ol>
       </article>
     </div>
@@ -885,8 +895,8 @@ html.lite .svc-bgtext{display:none}
   <div class="wrap">
     <div class="sec__head sec__head--shift">
       <p class="eyebrow glass glass--lite" data-reveal>04 · Кейс</p>
-      <h2 class="h2 rw" id="case-h">София поступила в Китай <em>с третьей попытки</em></h2>
-      <p class="sec__lead" data-reveal>Эксперт MChina. Родом из Хабаровска, живёт в Сиане и учится в Северо-Западном политехническом университете. С её истории начался наш маршрут.</p>
+      <h2 class="h2 rw" id="case-h">Два гранта в китайские вузы: <em>история Софии</em></h2>
+      <p class="sec__lead" data-reveal>Эксперт MChina. Родом из Хабаровска, проживает в Сиане и обучается в Северо-Западном политехническом университете. Дважды успешно поступила в китайские университеты на грант, её история стала основой нашего маршрута поступления.</p>
     </div>
     <div class="case__grid">
       <figure class="case__photo glass" data-reveal data-tilt>
@@ -894,35 +904,18 @@ html.lite .svc-bgtext{display:none}
         <figcaption><span>Сиань</span><span>NPU · бизнес-администрирование</span><span>HSK 4</span></figcaption>
       </figure>
       <div class="case__side">
-        <blockquote class="quote" data-reveal>Я прошла этот путь трижды и знаю, на каком шаге теряют год и деньги.<cite>София, эксперт MChina</cite></blockquote>
-        <div class="attempt glass" data-reveal>
-          <button class="attempt__btn" type="button" aria-expanded="false" aria-controls="att-1" data-cursor="открыть">
-            <span class="attempt__n">01</span><span><span class="attempt__t">Первая попытка</span><span class="attempt__tag">17 лет, сразу после школы</span></span><span class="attempt__plus" aria-hidden="true">+</span>
-          </button>
-          <div class="attempt__body" id="att-1" inert><div><div class="attempt__inner">
-            <p>София поступила, но из-за ковида не смогла уехать. Занятия шли онлайн и на китайском, учиться так не получилось, и она ушла.</p>
-            <span class="result">Год языка, потом два года паузы</span>
-          </div></div></div>
-        </div>
-        <div class="attempt glass" data-reveal style="--rd:.08s">
-          <button class="attempt__btn" type="button" aria-expanded="false" aria-controls="att-2" data-cursor="открыть">
-            <span class="attempt__n">02</span><span><span class="attempt__t">Вторая попытка</span><span class="attempt__tag">через агентство</span></span><span class="attempt__plus" aria-hidden="true">+</span>
-          </button>
-          <div class="attempt__body" id="att-2" inert><div><div class="attempt__inner">
-            <p>Языковой год в Китае обошёлся семье в 600 000 ₽. Язык София восстановила, но в выбранный вуз не прошла: у агентства были свои вузы по договорённости, и абитуриентов вели туда.</p>
-            <span class="result">Предложили вуз слабее</span>
-          </div></div></div>
-        </div>
-        <div class="attempt glass" data-reveal style="--rd:.16s">
-          <button class="attempt__btn" type="button" aria-expanded="false" aria-controls="att-3" data-cursor="открыть">
-            <span class="attempt__n">03</span><span><span class="attempt__t">Третья попытка</span><span class="attempt__tag">самостоятельно</span></span><span class="attempt__plus" aria-hidden="true">+</span>
-          </button>
-          <div class="attempt__body" id="att-3" inert><div><div class="attempt__inner">
-            <p>Сама выбрала вуз, разобралась в требованиях к каждому документу, собрала комплект и подала. Потом изучила, как работают другие агентства: цены, подготовку, документы. Из этого и собран маршрут MChina.</p>
-            <span class="result result--ok">Зачислена в NPU</span>
-          </div></div></div>
-        </div>
-        <button class="btn glass case__all" type="button" id="case-all" aria-expanded="false">Раскрыть всю историю</button>
+        <blockquote class="quote" data-reveal>Я прошла этот путь дважды и знаю, на каком шаге теряют время и деньги.<cite>София, эксперт MChina</cite></blockquote>
+        <div class="attempt-mini glass" data-reveal><span class="attempt__n">01</span><span><span class="attempt__t">Первая попытка</span><span class="attempt__tag">Нанкин, Университет Дуннань <span lang="zh">东南大学</span>, период пандемии</span></span></div>
+        <div class="attempt-mini glass" data-reveal style="--rd:.08s"><span class="attempt__n">02</span><span><span class="attempt__t">Вторая попытка</span><span class="attempt__tag">Сиань, Северо-Западный политехнический университет <span lang="zh">西北工业大学</span></span></span></div>
+        <button class="btn glass case__all" type="button" id="case-all" aria-expanded="false" aria-controls="case-story">Раскрыть всю историю</button>
+        <div class="case__story" id="case-story" inert><div>
+          <div class="attempt glass is-open"><div class="attempt__head"><span class="attempt__n">01</span><span><span class="attempt__t">Первая попытка</span><span class="attempt__tag">17 лет, сразу после школы</span></span></div>
+            <div class="attempt__body"><div><div class="attempt__inner"><p>Поступление в Университет Дуннань <span lang="zh">东南大学</span>. Из-за ковида учёба шла онлайн, формат оказался непродуктивным, приняла решение завершить обучение.</p><span class="result">Переосмысление обучения</span></div></div></div></div>
+          <div class="attempt glass is-open"><div class="attempt__head"><span class="attempt__n">02</span><span><span class="attempt__t">Вторая попытка</span><span class="attempt__tag">через агентство</span></span></div>
+            <div class="attempt__body"><div><div class="attempt__inner"><p>Обратилась в агентство, но стоимость 600 000 ₽ и обязательное поступление в вузы-партнёры агентства не подошли. Решила поступать самостоятельно.</p><span class="result">Предложили вуз слабее</span></div></div></div></div>
+          <div class="attempt glass is-open"><div class="attempt__head"><span class="attempt__n">03</span><span><span class="attempt__t">Третья попытка</span><span class="attempt__tag">самостоятельно</span></span></div>
+            <div class="attempt__body"><div><div class="attempt__inner"><p>Самостоятельно выбрала университет, разобралась с требованиями и пакетом документов. Изучила работу агентств, и на основе личного опыта появился маршрут MChina.</p><span class="result result--ok">Зачислена в Северо-Западный политехнический университет <span lang="zh">西北工业大学</span></span></div></div></div></div>
+        </div></div>
       </div>
     </div>
   </div>
@@ -933,11 +926,11 @@ html.lite .svc-bgtext{display:none}
     </div>
     <div class="strip__viewport" tabindex="0" aria-label="Кейс в цифрах, лента листается">
       <ul class="strip__track" role="list" style="list-style:none;margin:0">
-        <li class="tile glass"><span class="tile__num" data-count="3">3</span><span class="tile__cap"><b>попытки поступления</b><span>первую сорвал ковид, вторую вело агентство, третью София сделала сама</span></span></li>
-        <li class="tile glass"><span class="tile__num">HSK <span data-count="4">4</span></span><span class="tile__cap"><b>уровень китайского</b><span>год языка дома и год на языковой программе в Китае</span></span></li>
+        <li class="tile glass"><span class="tile__num" data-count="2">2</span><span class="tile__cap"><b>гранта в китайские вузы</b><span>Университет Дуннань и Северо-Западный политехнический университет</span></span></li>
+        <li class="tile glass"><span class="tile__num">HSK <span data-count="4">4</span></span><span class="tile__cap"><b>уровень китайского</b><span>подтверждён официальным экзаменом</span></span></li>
         <li class="tile glass"><span class="tile__num" data-count="985">985</span><span class="tile__cap"><b>проект, в который входит NPU</b><span>так в Китае отмечены 39 сильнейших государственных вузов</span></span></li>
         <li class="tile glass"><span class="tile__num">#<span data-count="182">182</span></span><span class="tile__cap"><b>место NPU в мире</b><span>по версии US News Best Global Universities</span></span></li>
-        <li class="tile glass"><span class="tile__num"><span data-count="600000">600 000</span> ₽</span><span class="tile__cap"><b>стоил языковой год через агентство</b><span>а в выбранный вуз София так и не прошла</span></span></li>
+        <li class="tile glass"><span class="tile__num"><span data-count="600000">600 000</span> ₽</span><span class="tile__cap"><b>просило агентство за поступление</b><span>от этого варианта София отказалась и поступила сама</span></span></li>
       </ul>
     </div>
   </div>
@@ -1130,7 +1123,7 @@ html.lite .svc-bgtext{display:none}
 <div class="pen" data-pos="br" aria-hidden="true">
   <div class="pen__wrap">
     <div class="book"><div class="book__cover"></div><div class="book__pages"><svg class="book__svg" viewBox="0 0 460 300"></svg></div></div>
-    <p class="pen__tr"><span>Привет, будущее. Я могу поехать учиться в Китай.</span></p>
+    <p class="pen__tr"><span>Привет, будущее. Я поеду учиться в Китай.</span></p>
     <div class="pen__pen"><i class="pen__shadow"></i><div class="pen__body"><i class="p-cap"></i><i class="p-barrel"></i><i class="p-ring"></i><i class="p-grip"></i><i class="p-nib"></i></div></div>
   </div>
 </div>
@@ -1719,13 +1712,13 @@ const Marquee = (() => {
 /* ── интерактивная схема экосистемы ── */
 const Eco = (() => {
   const DATA = {
-    kid: { t: 'Ученик', d: 'Решение о вузе принимает он сам. Мы показываем варианты, включая российские, если они подходят ребёнку лучше.', links: ['family', 'expert', 'manager', 'prof', 'unis', 'docs'] },
-    family: { t: 'Семья', d: 'Собирает документы по нашему списку и подписывает. Статус каждой заявки и все сроки узнаёт от менеджера.', links: ['kid', 'manager'] },
-    expert: { t: 'Эксперт в Китае', d: 'Живёт и учится в Китае, сама прошла поступление. Проверяет выбор вуза, правит мотивационное письмо, готовит к интервью.', links: ['kid', 'prof', 'unis'] },
+    kid: { t: 'Ученик', d: 'Самостоятельно принимает окончательное решение по выбору университета. Мы представляем все доступные варианты, в том числе российские, если они лучше соответствуют целям ученика.', links: ['family', 'expert', 'manager', 'prof', 'unis', 'docs'] },
+    family: { t: 'Семья', d: 'Готовит документы по нашему списку, обеспечивает своевременное подписание. По всем статусам заявок и срокам получает актуальную информацию от менеджера.', links: ['kid', 'manager'] },
+    expert: { t: 'Эксперты в Китае', d: 'Наши специалисты живут в Китае и сами прошли поступление. Помогают выбрать вуз, доработать мотивационное письмо и подготовиться к интервью.', links: ['kid', 'prof', 'unis'] },
     manager: { t: 'Менеджер MChina', d: 'Ведёт заявку от анкеты до зачисления: заполняет порталы вузов, следит за дедлайнами, переписывается с приёмной комиссией на китайском.', links: ['kid', 'family', 'unis', 'docs'] },
-    prof: { t: 'Профориентация', d: 'Тесты и разговор с профориентологом. На выходе специальность и три вуза под профиль ребёнка.', links: ['kid', 'expert', 'unis'] },
-    unis: { t: 'Вузы Китая', d: 'Подаём туда, где ребёнку лучше учиться. Договорённостей с вузами у нас нет, поэтому чужих квот в списке тоже нет.', links: ['kid', 'manager', 'expert', 'prof'] },
-    docs: { t: 'Экзамены и документы', d: 'Регистрация на CSCA, HSK или Duolingo. Перевод, нотариус и апостиль по списку, который мы проверяем построчно.', links: ['kid', 'manager'] },
+    prof: { t: 'Профориентация', d: 'Комплексная диагностика и глубокая консультация специалиста. В результате — рекомендованная специальность и список из трёх вузов, соответствующих личным способностям и целям ученика.', links: ['kid', 'expert', 'unis'] },
+    unis: { t: 'Вузы Китая', d: 'Подбираем университет, в котором ребёнку будет комфортно учиться и строить карьеру. Каждый выбор делаем с учётом его личных целей.', links: ['kid', 'manager', 'expert', 'prof'] },
+    docs: { t: 'Экзамены и документы', d: 'Помогаем записаться на CSCA, HSK и Duolingo. Курируем все стадии оформления пакета документов от перевода до финальной проверки.', links: ['kid', 'manager'] },
   };
   const map = $('.eco__map'), svg = $('.eco__lines'), nodes = $$('.node', map);
   const byId = Object.fromEntries(nodes.map((n) => [n.dataset.id, n]));
@@ -1794,21 +1787,13 @@ const Eco = (() => {
 
 /* ── кейс: раскрытие попыток, наклон фото, лента цифр ── */
 const Case = (() => {
-  const attempts = $$('.attempt'), all = $('#case-all');
-  const setOpen = (a, v) => {
-    a.classList.toggle('is-open', v);
-    $('.attempt__btn', a).setAttribute('aria-expanded', String(v));
-    $('.attempt__body', a).inert = !v;
-  };
-  const syncAll = () => {
-    const open = attempts.every((a) => a.classList.contains('is-open'));
-    all.textContent = open ? 'Свернуть историю' : 'Раскрыть всю историю';
-    all.setAttribute('aria-expanded', String(open));
-  };
-  attempts.forEach((a) => $('.attempt__btn', a).addEventListener('click', () => { setOpen(a, !a.classList.contains('is-open')); syncAll(); }));
+  const story = $('#case-story'), all = $('#case-all');
   all.addEventListener('click', () => {
-    const open = !attempts.every((a) => a.classList.contains('is-open'));
-    attempts.forEach((a) => setOpen(a, open)); syncAll();
+    const open = !story.classList.contains('is-open');
+    story.classList.toggle('is-open', open);
+    story.inert = !open;
+    all.setAttribute('aria-expanded', String(open));
+    all.textContent = open ? 'Свернуть историю' : 'Раскрыть всю историю';
   });
 
   const photo = $('[data-tilt]');
@@ -1935,7 +1920,7 @@ const Pen = (() => {
   const NS = 'http://www.w3.org/2000/svg';
   const make = (tag, attrs) => { const el = document.createElementNS(NS, tag); Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v)); return el; };
   const cells = [], texts = [];
-  Array.from('你好未来我可以去中国学习').forEach((ch, i) => {
+  Array.from('你好未来我将去中国学习\u3000').forEach((ch, i) => {
     const page = i < 6 ? 0 : 1, local = i % 6, col = local % 2, row = Math.floor(local / 2);
     const x = (page ? 250 : 30) + col * 92, y = 16 + row * 92;
     const rect = make('rect', { class: 'cell', x, y, width: 84, height: 84, rx: 4 });
