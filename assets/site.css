@@ -568,3 +568,105 @@ html.js .q.is-on{animation:qin .4s var(--ease)}
   .quiz__cat span{font-size:20px;right:auto;left:-38px;top:8px}
   .logo__img{height:36px}
 }
+
+/* ══ версия 7 (25.11.2026): котики без срезов, подписи шторки, цены с акцентом, окно записи ══ */
+
+/* «До» слева, «После» справа — видно сразу */
+.ba__side{position:absolute;top:14px;z-index:6;padding:7px 14px;border-radius:10px;font-size:12.5px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;pointer-events:none;box-shadow:0 6px 16px -8px rgba(70,15,15,.5)}
+.ba__side--l{left:14px;background:var(--ink);color:#fff}
+.ba__side--r{right:14px;background:var(--gold-2);color:var(--red-d)}
+.ba__layer{padding-top:62px}
+
+/* котики вырезаны по грудь: ровный срез всегда прячем за край карточки — котик «выглядывает» */
+.peek{position:absolute;z-index:0;height:auto;pointer-events:none;filter:drop-shadow(0 10px 14px rgba(70,15,15,.2))}
+/* облако вопросов — в панели, котик выглядывает из-за её верхнего края */
+.qwrap{position:relative;padding-top:96px}
+.qwrap .qcloud{position:relative;z-index:1;padding:22px;border-radius:22px;background:#FFFCF9;box-shadow:var(--shadow)}
+.qcat{position:absolute;right:34px;top:0;width:150px;rotate:0deg;z-index:0}
+/* котик с листом — над списком вопросов */
+.faq--cat{position:relative;padding-top:120px}
+.faq--cat details{position:relative;z-index:1;background:#FFFCF9;-webkit-backdrop-filter:none;backdrop-filter:none}
+.peek--faq{right:24px;top:0;width:118px}
+/* котик с телефоном — над чеком */
+.receipt-wrap{position:relative;padding-top:112px}
+.receipt-wrap .receipt{position:relative;z-index:1}
+.peek--receipt{left:50%;translate:-50% 0;top:0;width:104px}
+
+/* первый экран: низ котика закрывает посадочный талон */
+.hero__cat{left:0;bottom:64px;width:62%}
+.ticket{left:4%;right:auto;bottom:4%;width:min(360px,70%);rotate:-3deg}
+
+/* страница «Языковой год»: котик в арке, срез совпадает с её нижним краем */
+.page-hero__art--cat{max-width:320px;padding:28px 24px 0;border-radius:180px 180px 24px 24px;overflow:hidden;background:radial-gradient(circle at 50% 20%,rgba(227,184,115,.45),transparent 60%),linear-gradient(160deg,var(--red-2),var(--red-d));filter:none;box-shadow:var(--shadow)}
+.page-hero__art--cat img{display:block;width:100%;margin-bottom:-2px}
+
+/* ── цены: языковой год ярко, бакалавриат приглушён до нажатия ── */
+.plans{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,.8fr);align-items:stretch}
+.plan{position:relative;transition:opacity .35s,filter .35s,transform .35s var(--ease),box-shadow .35s}
+.plan:not(.is-active){opacity:.5;filter:saturate(.35);transform:scale(.97);cursor:pointer}
+.plan:not(.is-active):hover{opacity:.78;filter:saturate(.7)}
+.plan.is-active{box-shadow:0 30px 60px -28px rgba(163,16,28,.55),inset 0 1px 0 #fff}
+.plan--lang.is-active{background:linear-gradient(150deg,#fff 0%,#FFF4EE 55%,#FBE3DA 100%)}
+.plan--lang{border-top-color:var(--red)}
+.plan--bach{border-top-color:var(--gold)}
+.plan--bach .plan__tag{background:var(--gold);color:#fff}
+.plan--lang .plan__tag{background:linear-gradient(120deg,var(--red),var(--red-2));color:#fff}
+.plan__pick{position:absolute;inset:0;z-index:0;opacity:0;border:0;background:none;cursor:pointer}
+.plan.is-active .plan__pick{pointer-events:none}
+.plan>*:not(.plan__pick){position:relative;z-index:1}
+.plan:not(.is-active)>*:not(.plan__pick){pointer-events:none}
+.plan:not(.is-active) .plan__btns{pointer-events:auto}
+.plan dl{font-size:14.5px}
+.plan__line{margin:0;padding-top:14px;border-top:1px dashed var(--line);font-size:15px;color:var(--ink-2)}
+.plan__btns{display:flex;flex-direction:column;align-items:flex-start;gap:12px;margin-top:auto}
+.plan__btns .btn{width:100%}
+
+/* чек: пример того, что семья получает за цену */
+.receipt{font-family:var(--f-text);rotate:-1.5deg;padding:24px 22px 30px;max-width:none}
+.receipt__h{font-size:20px;letter-spacing:.04em}
+.receipt__sub{margin:6px 0 14px;font-size:14px;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.03em}
+.receipt ul{gap:8px;font-size:14.5px}
+.receipt li{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;padding-bottom:7px;border-bottom:1px dotted rgba(42,26,26,.18)}
+.receipt li b{display:grid;place-items:center;width:20px;height:20px;border-radius:6px;background:var(--red);color:#fff;font-size:12px}
+.receipt__total{font-size:18px;align-items:baseline}
+.receipt__total b{font:900 24px/1 var(--f-head)}
+.receipt__note{margin:12px 0 0;font-size:12.5px;color:var(--ink-3)}
+.receipt.is-print ul li{animation:qin .45s var(--ease) both}
+.receipt.is-print ul li:nth-child(2){animation-delay:.04s}.receipt.is-print ul li:nth-child(3){animation-delay:.08s}
+.receipt.is-print ul li:nth-child(4){animation-delay:.12s}.receipt.is-print ul li:nth-child(5){animation-delay:.16s}
+.receipt.is-print ul li:nth-child(6){animation-delay:.2s}.receipt.is-print ul li:nth-child(7){animation-delay:.24s}
+.receipt.is-print ul li:nth-child(n+8){animation-delay:.28s}
+
+/* ── всплывающее окно записи ── */
+.modal{padding:0;border:0;background:transparent;max-width:min(620px,calc(100% - 24px));width:100%;max-height:calc(100% - 24px)}
+.modal::backdrop{background:rgba(42,26,26,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.modal[open]{animation:qin .35s var(--ease)}
+.modal__box{padding:clamp(22px,3vw,34px);border-radius:22px;background:linear-gradient(150deg,#fff,#FFF6F1);overflow:auto}
+.modal__x{position:absolute;right:12px;top:12px;z-index:3;width:40px;height:40px;border:0;border-radius:12px;background:var(--red-tint);color:var(--red);font-size:24px;line-height:1;cursor:pointer}
+.modal__h{margin:14px 0 8px;font:900 clamp(22px,2.4vw,30px)/1.1 var(--f-head);text-transform:uppercase;color:var(--red)}
+.modal__sub{margin:0 0 18px;color:var(--ink-2)}
+
+@media (max-width:1100px){
+  .plans{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .receipt-wrap{grid-column:1/-1;max-width:420px;width:100%;justify-self:center}
+}
+@media (max-width:900px){
+  .plans{grid-template-columns:minmax(0,1fr)}
+  .plan:not(.is-active){transform:none}
+  .plan--lang{order:1}.receipt-wrap{order:2;max-width:none}.plan--bach{order:3}
+  .page-hero__art--cat{max-width:230px}
+  .who__cats{position:relative;z-index:0;margin:-6px 0 -40px auto}
+  .tabs{position:relative;z-index:1}
+  .tabs__tab{background:rgba(255,252,249,.96)}
+  .qcat{position:absolute;display:block;width:120px;margin:0;right:20px}
+  .qwrap{padding-top:78px}
+}
+@media (max-width:640px){
+  .hero__cat{width:64%;bottom:58px}
+  .ticket{width:80%;left:2%}
+  .ba__side{top:10px;font-size:11px;padding:6px 10px}
+  .ba__side--l{left:10px}.ba__side--r{right:10px}
+  .ba__layer{padding-top:52px}
+  .faq--cat{padding-top:100px}
+  .peek--faq{width:96px}
+}

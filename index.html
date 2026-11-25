@@ -98,7 +98,7 @@
       <p class="sec__lead" data-reveal>Выбрать вуз, заполнить анкету, отправить документы. Но на практике у семьи появляются десятки вопросов, и ответы на них разбросаны по сайтам, чатам и форумам.</p>
     </div>
     <div class="qwrap">
-    <img class="qcat" src="assets/img/kot-glaza.webp" alt="" width="240" height="218" loading="lazy">
+    <img class="peek qcat" src="assets/img/kot-glaza.webp" alt="" width="240" height="218" loading="lazy">
     <ul class="qcloud" data-reveal>
       <li>Как выбрать вуз из сотен вариантов?</li>
       <li>Какие специальности доступны иностранцам?</li>
@@ -184,11 +184,12 @@
     <div class="sec__head">
       <p class="eyebrow" data-reveal>До и после</p>
       <h2 class="h2 rw" id="ba-h">Что меняется, когда учишься <em>в Китае</em></h2>
-      <p class="sec__lead" data-reveal>Слева — путь, к которому привыкли. Потяните шторку и посмотрите, как те же пять пунктов выглядят при учёбе в Китае.</p>
+      <p class="sec__lead" data-reveal>Слева — учёба в России, справа — в Китае. Двигайте шторку: каждая строка показывает, что меняется.</p>
     </div>
-    <div class="ba" id="ba" style="--pos:100%" data-reveal>
+    <div class="ba" id="ba" style="--pos:50%" data-reveal>
+      <span class="ba__side ba__side--l" aria-hidden="true">До · Россия</span>
+      <span class="ba__side ba__side--r" aria-hidden="true">После · Китай</span>
       <div class="ba__layer ba__before">
-        <p class="ba__cap">Учёба в России</p>
         <ul class="ba__list" aria-label="До: учёба в России">
           <li><span class="ba__k">Поступление</span><span class="ba__t">Всё решают баллы ЕГЭ: один экзамен в июне — и бюджетное место либо есть, либо нет</span></li>
           <li><span class="ba__k">Деньги</span><span class="ba__t">Бюджетных мест на общий конкурс всё меньше, платное обучение в сильном вузе — дорого</span></li>
@@ -198,7 +199,6 @@
         </ul>
       </div>
       <div class="ba__layer ba__after" aria-hidden="false">
-        <p class="ba__cap">Учёба в Китае</p>
         <ul class="ba__list" aria-label="После: учёба в Китае">
           <li><span class="ba__k">Поступление</span><span class="ba__t">Баллы ЕГЭ не нужны: смотрят аттестат, язык и экзамены для иностранцев, а подать можно сразу в три вуза</span></li>
           <li><span class="ba__k">Деньги</span><span class="ba__t">Год в сильном вузе Китая сопоставим по цене с региональным вузом в России, и можно подать на стипендии</span></li>
@@ -207,7 +207,7 @@
           <li><span class="ba__k">Диплом</span><span class="ba__t">Диплом вуза из мировых рейтингов. В России действует без легализации — нужен только нотариальный перевод</span></li>
         </ul>
       </div>
-      <div class="ba__handle" role="slider" tabindex="0" aria-label="Шторка: учёба в России или в Китае" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-valuetext="видно: учёба в России">
+      <div class="ba__handle" role="slider" tabindex="0" aria-label="Шторка: учёба в России или в Китае" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="видно обе части">
         <span class="ba__knob"><svg viewBox="0 0 34 34"><path d="M12 10l-6 7 6 7M22 10l6 7-6 7"/></svg></span>
         <span class="ba__pull">Тяните</span>
       </div>
@@ -228,11 +228,11 @@
       <li data-reveal><span class="zig__n">02</span><div class="zig__card glass"><h3>Подбор вузов</h3><p>Под профиль, язык, оценки и бюджет. Основной вариант и запасные.</p><p class="zig__out">На руках: список вузов с обоснованием</p></div></li>
       <li data-reveal><span class="zig__n">03</span><div class="zig__card glass"><h3>Стипендии</h3><p>Государственные и университетские программы: требования и сроки.</p><p class="zig__out">На руках: стипендии, на которые можно подать</p></div></li>
       <li data-reveal><span class="zig__n">04</span><div class="zig__card glass"><h3>Календарь</h3><p>План подготовки и поступления по месяцам: экзамены, документы, подача.</p><p class="zig__out">На руках: календарь с датами</p></div></li>
-      <li data-reveal><span class="zig__n">05</span><div class="zig__card glass"><h3>Документы</h3><p>Список под каждый вуз, проверка каждой бумаги, перевод и апостиль.</p><p class="zig__out">На руках: полный пакет документов</p></div><img class="zig__cat" src="assets/img/kot-dokument.webp" alt="" width="190" height="286" loading="lazy"></li>
+      <li data-reveal><span class="zig__n">05</span><div class="zig__card glass"><h3>Документы</h3><p>Список под каждый вуз, проверка каждой бумаги, перевод и апостиль.</p><p class="zig__out">На руках: полный пакет документов</p></div></li>
       <li data-reveal><span class="zig__n">06</span><div class="zig__card glass"><h3>Экзамены</h3><p>Регистрация на CSCA, HSK или Duolingo, контроль дат.</p><p class="zig__out">На руках: регистрация на экзамены</p></div></li>
       <li data-reveal><span class="zig__n">07</span><div class="zig__card glass"><h3>Мотивационное письмо</h3><p>Правим и переводим. По письму комиссия знакомится со студентом.</p><p class="zig__out">На руках: готовое письмо</p></div></li>
       <li data-reveal><span class="zig__n">08</span><div class="zig__card glass"><h3>Подача заявок</h3><p>Анкеты на официальных китайских порталах в рамках выбранного пакета.</p><p class="zig__out">На руках: поданные заявки</p></div></li>
-      <li data-reveal><span class="zig__n">09</span><div class="zig__card glass"><h3>Собеседование и переписка</h3><p>Репетируем интервью, общаемся с приёмной комиссией на китайском от имени семьи.</p><p class="zig__out">На руках: решение вуза</p></div><img class="zig__cat" src="assets/img/kot-telefon.webp" alt="" width="190" height="262" loading="lazy"></li>
+      <li data-reveal><span class="zig__n">09</span><div class="zig__card glass"><h3>Собеседование и переписка</h3><p>Репетируем интервью, общаемся с приёмной комиссией на китайском от имени семьи.</p><p class="zig__out">На руках: решение вуза</p></div></li>
       <li data-reveal><span class="zig__n">10</span><div class="zig__card glass"><h3>Жизнь в Китае</h3><p>WeChat, Alipay, банковская карта, связь и заселение в общежитие.</p><p class="zig__out">На руках: чек-листы на первые недели</p></div></li>
     </ol>
   </div>
@@ -291,10 +291,29 @@
     <div class="sec__head">
       <p class="eyebrow" data-reveal>Два маршрута и цены</p>
       <h2 class="h2 rw" id="routes-h">Платите за <em>весь путь</em> сразу</h2>
-      <p class="sec__lead" data-reveal>В цену входят все этапы сопровождения выбранного пакета. Обучение, проживание, перевод и апостиль оплачиваются отдельно. Оплата в рублях по курсу дня оплаты, договор заключаем напрямую.</p>
+      <p class="sec__lead" data-reveal>Одна сумма за всё сопровождение. Нажмите на маршрут — в чеке появится, что именно вы получаете за эти деньги. Оплата в рублях по курсу дня оплаты, договор напрямую.</p>
     </div>
-    <div class="plans">
-      <article class="plan glass" data-reveal>
+    <div class="plans" id="plans">
+      <article class="plan plan--lang glass is-active" data-plan="lang" data-reveal>
+        <button class="plan__pick" type="button" aria-pressed="true">Показать чек: языковой год</button>
+        <span class="plan__tag">Мягкий старт</span>
+        <h3>Языковой год / Foundation</h3>
+        <p class="plan__price"><span data-price="lang">7 200</span> ¥<small>за всё сопровождение</small></p>
+        <dl>
+          <dt>Вход</dt><dd>требований к языку нет</dd>
+          <dt>Подаём</dt><dd>в 1 вуз</dd>
+          <dt>Экзамены</dt><dd>не нужны</dd>
+          <dt>Окно подачи</dt><dd>март – июль</dd>
+          <dt>Срок</dt><dd>3–6 месяцев</dd>
+        </dl>
+        <p class="plan__line">Год языка и жизни в Китае, затем бакалавриат — уже с языком и опытом подачи.</p>
+        <div class="plan__btns">
+          <button class="btn btn--ink" type="button" data-lead="Языковой год / Foundation">Записаться бесплатно <svg class="ico"><use href="#i-arr"/></svg></button>
+          <a class="link" href="yazykovoy-god.html">Подробнее</a>
+        </div>
+      </article>
+      <article class="plan plan--bach glass" data-plan="bach" data-reveal style="--rd:.1s">
+        <button class="plan__pick" type="button" aria-pressed="false">Показать чек: бакалавриат</button>
         <span class="plan__tag">Язык на уровне</span>
         <h3>Бакалавриат</h3>
         <p class="plan__price"><span data-price="bach">12 200</span> ¥<small>за всё сопровождение</small></p>
@@ -305,55 +324,22 @@
           <dt>Окно подачи</dt><dd>ноябрь – май</dd>
           <dt>Срок</dt><dd>6–9 месяцев</dd>
         </dl>
-        <ul class="plan__inc">
-          <li>Профориентация и выбор специальности</li>
-          <li>Подбор трёх вузов и стипендий</li>
-          <li>Документы: проверка, перевод и апостиль</li>
-          <li>Регистрация на CSCA, Duolingo или HSK</li>
-          <li>Редактирование и перевод мотивационного письма</li>
-          <li>Репетиция собеседования</li>
-          <li>Заявки на китайских порталах</li>
-          <li>Переписка с приёмной комиссией на китайском</li>
-          <li>Чек-листы по жизни в Китае</li>
-        </ul>
-        <a class="link" href="bakalavriat.html">Подробнее о бакалавриате</a>
+        <p class="plan__line">Сразу на диплом бакалавра: подаём в три вуза, чтобы у ребёнка остался выбор.</p>
+        <div class="plan__btns">
+          <button class="btn btn--ink" type="button" data-lead="Бакалавриат">Записаться бесплатно <svg class="ico"><use href="#i-arr"/></svg></button>
+          <a class="link" href="bakalavriat.html">Подробнее</a>
+        </div>
       </article>
-      <article class="plan plan--b glass" data-reveal style="--rd:.1s">
-        <span class="plan__tag">Язык с нуля</span>
-        <h3>Языковой год / Foundation</h3>
-        <p class="plan__price"><span data-price="lang">7 200</span> ¥<small>за всё сопровождение</small></p>
-        <dl>
-          <dt>Вход</dt><dd>требований к языку нет</dd>
-          <dt>Подаём</dt><dd>в 1 вуз</dd>
-          <dt>Экзамены</dt><dd>не нужны</dd>
-          <dt>Окно подачи</dt><dd>март – июль</dd>
-          <dt>Срок</dt><dd>3–6 месяцев</dd>
-        </dl>
-        <ul class="plan__inc">
-          <li>Выбор формата: языковой курс или Foundation</li>
-          <li>Подбор вуза с прицелом на бакалавриат</li>
-          <li>Документы: проверка, перевод, нотариат и апостиль</li>
-          <li>Подача заявки и сопровождение до решения</li>
-          <li>Подготовка к собеседованию, если оно есть</li>
-          <li>Переписка с приёмной комиссией</li>
-          <li>Чек-лист адаптации: платежи, карта, связь, быт</li>
-        </ul>
-        <a class="link" href="yazykovoy-god.html">Подробнее о языковом годе</a>
-      </article>
-    <aside class="receipt" data-reveal aria-label="Что входит в бюджет семьи">
-      <p class="receipt__h">Бюджет учёбы в Китае</p>
-      <p class="receipt__sub">кроме сопровождения считаем весь бюджет семьи под выбранные вузы</p>
-      <ul>
-        <li><span>Обучение</span><i></i><b>✓</b></li>
-        <li><span>Проживание</span><i></i><b>✓</b></li>
-        <li><span>Питание</span><i></i><b>✓</b></li>
-        <li><span>Регистрационные сборы</span><i></i><b>✓</b></li>
-        <li><span>Страховка</span><i></i><b>✓</b></li>
-        <li><span>Дополнительные расходы</span><i></i><b>✓</b></li>
-        <li class="receipt__minus"><span>Стипендии</span><i></i><b>−</b></li>
-      </ul>
-      <p class="receipt__total"><span>Итог</span><b>понятен до подачи</b></p>
-    </aside>
+      <div class="receipt-wrap" data-reveal style="--rd:.2s">
+        <img class="peek peek--receipt" src="assets/img/kot-telefon.webp" alt="" width="190" height="262" loading="lazy">
+        <aside class="receipt" aria-live="polite" aria-label="Пример чека">
+          <p class="receipt__h">Ваш чек</p>
+          <p class="receipt__sub" id="rc-name">Языковой год / Foundation</p>
+          <ul id="rc-items"></ul>
+          <p class="receipt__total"><span>Итого</span><b id="rc-total">7 200 ¥</b></p>
+          <p class="receipt__note" id="rc-note">Отдельно: обучение — напрямую вузу, проживание, нотариус и апостиль.</p>
+        </aside>
+      </div>
     </div>
   </div>
 </section>
@@ -366,7 +352,8 @@
       <h2 class="h2 rw" id="faq-h">О чём <em>спрашивают</em> чаще всего</h2>
       <p class="sec__lead" data-reveal>Больше ответов на странице <a class="link" href="roditelyam.html">для родителей</a>.</p>
     </div>
-    <div class="faq">
+    <div class="faq faq--cat">
+      <img class="peek peek--faq" src="assets/img/kot-dokument.webp" alt="" width="190" height="286" loading="lazy">
       <details class="glass"><summary>Признают ли китайский диплом в России?</summary><p>Да. Россия и Китай с 1995 года взаимно признают документы об образовании. Китайский диплом действует в России без легализации, нужен только перевод с нотариальным заверением.</p></details>
       <details class="glass"><summary>Нужно ли знать китайский заранее?</summary><p>Для языкового года нет: язык учат на месте. Для бакалавриата нужен HSK 4–5 или английский: IELTS 7.0+, TOEFL 80+ или Duolingo 115+.</p></details>
       <details class="glass"><summary>Что, если основной вуз откажет?</summary><p>Поэтому на бакалавриат подаём сразу в три вуза и заранее готовим запасные варианты. Если не прошли никуда, остаётся языковой год и повторная подача через год, уже с языком и опытом.</p></details>
@@ -504,6 +491,47 @@
 </section>
 
 </main>
+<dialog class="modal" id="lead-modal" aria-labelledby="lm-h">
+  <form class="modal__box glass" id="lm-form" novalidate>
+    <button class="modal__x" type="button" id="lm-close" aria-label="Закрыть">×</button>
+    <div id="lm-fields">
+      <p class="eyebrow">Бесплатная консультация</p>
+      <h3 class="modal__h" id="lm-h">Записаться на консультацию</h3>
+      <p class="modal__sub">Маршрут: <b id="lm-route">—</b>. Свяжемся в течение рабочего дня и подберём время.</p>
+      <div class="row">
+        <div class="field"><label for="lm-name">Как вас зовут</label><input class="inp" id="lm-name" name="name" autocomplete="name" aria-describedby="lm-e-name"><p class="err" id="lm-e-name"></p></div>
+        <div class="field"><label for="lm-contact">Телефон или ник</label><input class="inp" id="lm-contact" name="contact" autocomplete="tel" placeholder="+7 900 000-00-00 или @ник" aria-describedby="lm-e-contact"><p class="err" id="lm-e-contact"></p></div>
+      </div>
+      <fieldset class="field fs">
+        <legend class="fs-legend">Где удобнее общаться</legend>
+        <div class="pills">
+          <label><input type="radio" name="channel" value="Telegram" checked><span>Telegram</span></label>
+          <label><input type="radio" name="channel" value="MAX"><span>MAX</span></label>
+          <label><input type="radio" name="channel" value="WhatsApp"><span>WhatsApp</span></label>
+          <label><input type="radio" name="channel" value="Звонок"><span>Звонок</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="field fs">
+        <legend class="fs-legend">Город</legend>
+        <div class="pills" id="lm-city" aria-describedby="lm-e-city">
+          <label><input type="radio" name="city" value="Хабаровск"><span>Хабаровск</span></label>
+          <label><input type="radio" name="city" value="Владивосток"><span>Владивосток</span></label>
+          <label><input type="radio" name="city" value="Другой город"><span>Другой город</span></label>
+        </div>
+        <p class="err" id="lm-e-city"></p>
+      </fieldset>
+      <div class="field"><label class="check"><input type="checkbox" id="lm-consent" name="consent" aria-describedby="lm-e-consent"><span>Согласен на обработку персональных данных. Контакты третьим лицам не передаём.</span></label><p class="err" id="lm-e-consent"></p></div>
+      <button class="btn btn--ink lead__btn" type="submit">Записаться <svg class="ico"><use href="#i-arr"/></svg></button>
+    </div>
+    <div class="success" id="lm-ok" role="status" tabindex="-1" hidden>
+      <svg class="ico"><use href="#i-lotus"/></svg>
+      <h3>Заявка у нас</h3>
+      <p id="lm-ok-text">Свяжемся в течение рабочего дня.</p>
+      <p class="fine">Демо-версия страницы: отправка заявок подключается отдельно.</p>
+    </div>
+  </form>
+</dialog>
+
 <footer class="foot">
   <img class="foot__cat" src="assets/img/kot-vyglyadyvaet.webp" alt="" width="210" height="213" loading="lazy">
   <div class="wrap foot__grid">

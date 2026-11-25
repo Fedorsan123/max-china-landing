@@ -94,8 +94,8 @@ function routeDates(route, grade, now = new Date()) {
   if (!ba) return;
   const handle = $('.ba__handle', ba);
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
-  // шторка стоит справа: видно «Учёба в России»; тянем влево — строки превращаются в «Учёба в Китае»
-  let pos = 92, dragging = false, touched = false;
+  // шторка стоит посередине: слева «До · Россия», справа «После · Китай»
+  let pos = 50, dragging = false, touched = false;
   const set = (v) => {
     pos = clamp(v, 2, 98);
     ba.style.setProperty('--pos', pos.toFixed(2) + '%');
@@ -122,21 +122,26 @@ function routeDates(route, grade, now = new Date()) {
     else if (e.key === 'Home') { e.preventDefault(); touch(); set(0); }
     else if (e.key === 'End') { e.preventDefault(); touch(); set(100); }
   });
-  /* подсказка: граница сама слегка качнётся при первом появлении */
+  /* подсказка при первом появлении: одно плавное качание — до трети слева, до трети справа,
+     остановка посередине. Ждём, пока блок доедет (появление .9–1 с), чтобы не было рывка;
+     путь — синус по сглаженному времени: скорость меняется без скачков */
   if (reduceMotion || !('IntersectionObserver' in window)) return;
   const io = new IntersectionObserver((entries) => {
     if (!entries[0].isIntersecting) return;
     io.disconnect();
-    const keys = [92, 58, 84, 92], t0 = performance.now() + 500, dur = 2200;
-    const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
-    const step = (now) => {
-      if (touched) return;
-      const u = clamp((now - t0) / dur, 0, 1) * 3, seg = Math.min(2, Math.floor(u));
-      set(keys[seg] + (keys[seg + 1] - keys[seg]) * ease(u - seg));
-      if (u < 3) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }, { threshold: 0.5 });
+    const dur = 3200, amp = 50 / 3;
+    const ease = (t) => 0.5 - Math.cos(Math.PI * t) / 2;
+    setTimeout(() => {
+      const t0 = performance.now();
+      const step = (now) => {
+        if (touched) return;
+        const t = Math.min(1, (now - t0) / dur);
+        set(50 - amp * Math.sin(2 * Math.PI * ease(t)));
+        if (t < 1) requestAnimationFrame(step); else set(50);
+      };
+      requestAnimationFrame(step);
+    }, 1100);
+  }, { threshold: 0.6 });
   io.observe(ba);
 })();
 
@@ -338,4 +343,98 @@ function routeDates(route, grade, now = new Date()) {
     if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
   }), { threshold: 0.2 });
   hs.forEach((h) => io.observe(h));
+})();
+
+/* ── цены: один маршрут яркий, второй приглушён; чек показывает, что входит в выбранный ── */
+(() => {
+  const box = $('#plans');
+  if (!box) return;
+  // что получает семья — по составу пакетов из .business/products/product-2.md
+  const RECEIPT = {
+    lang: {
+      name: 'Языковой год / Foundation',
+      items: ['Выбор формата: языковой курс или Foundation', 'Подбор вуза с прицелом на бакалавриат', 'Список документов и проверка каждой бумаги',
+        'Подача заявки и сопровождение до решения', 'Подготовка к собеседованию', 'Переписка с вузом от имени семьи', 'Чек-лист адаптации в Китае'],
+      note: 'Отдельно: обучение — напрямую вузу, проживание, питание, нотариус и апостиль.',
+    },
+    bach: {
+      name: 'Бакалавриат',
+      items: ['Профориентация и выбор специальности', 'Подбор трёх вузов и стипендий', 'Документы: сбор, проверка, перевод',
+        'Регистрация на CSCA, HSK или Duolingo', 'Мотивационное письмо: правка и перевод', 'Заявки в 3 вуза на китайских порталах',
+        'Репетиция собеседования', 'Переписка с вузом на китайском', 'Чек-листы по жизни в Китае'],
+      note: 'Отдельно: обучение — напрямую вузу, проживание, нотариус и апостиль.',
+    },
+  };
+  const cards = $$('[data-plan]', box);
+  const show = (key) => {
+    cards.forEach((c) => {
+      const on = c.dataset.plan === key;
+      c.classList.toggle('is-active', on);
+      $('.plan__pick', c).setAttribute('aria-pressed', String(on));
+    });
+    const r = RECEIPT[key];
+    $('#rc-name').textContent = r.name;
+    $('#rc-items').innerHTML = r.items.map((t) => `<li><span>${t}</span><b aria-label="входит">✓</b></li>`).join('');
+    $('#rc-total').textContent = fmt(CNY[key]) + ' ¥';
+    $('#rc-note').textContent = r.note;
+    const rc = $('.receipt', box);
+    rc.classList.remove('is-print'); void rc.offsetWidth; rc.classList.add('is-print');
+  };
+  // клик по любому месту приглушённой карточки делает её активной
+  cards.forEach((c) => c.addEventListener('click', (e) => {
+    if (e.target.closest('a')) return;
+    if (!c.classList.contains('is-active')) show(c.dataset.plan);
+  }));
+  show('lang');
+})();
+
+/* ── всплывающая форма записи: кнопки с data-lead ── */
+(() => {
+  const dlg = $('#lead-modal');
+  if (!dlg) return;
+  const form = $('#lm-form'), fields = $('#lm-fields'), ok = $('#lm-ok');
+  const val = (n) => (form.querySelector(`input[name="${n}"]:checked`) || {}).value;
+  let route = '';
+  const rules = {
+    name: () => { const v = form.name.value.trim(); return v.length < 2 ? 'Напишите имя, хотя бы две буквы' : /\d/.test(v) ? 'В имени не должно быть цифр' : ''; },
+    contact: () => {
+      const v = form.contact.value.trim();
+      if (!v) return 'Оставьте телефон или ник';
+      if (/^@/.test(v) || /[a-z]/i.test(v)) return /^@?[a-zA-Z0-9_]{5,32}$/.test(v) ? '' : 'Ник: от 5 символов, латиница, цифры и _';
+      const d = v.replace(/\D/g, '');
+      return d.length >= 10 && d.length <= 15 ? '' : 'Проверьте номер: нужно 10–11 цифр';
+    },
+    city: () => (val('city') ? '' : 'Выберите город'),
+    consent: () => (form.consent.checked ? '' : 'Нужно согласие на обработку данных'),
+  };
+  const target = { name: $('#lm-name'), contact: $('#lm-contact'), city: $('#lm-city'), consent: $('#lm-consent') };
+  const check = (n) => { const m = rules[n](); $('#lm-e-' + n).textContent = m; target[n].setAttribute('aria-invalid', String(!!m)); return !m; };
+  const reset = () => {
+    form.reset(); fields.hidden = false; ok.hidden = true;
+    Object.keys(rules).forEach((n) => { $('#lm-e-' + n).textContent = ''; target[n].removeAttribute('aria-invalid'); });
+  };
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-lead]');
+    if (!b) return;
+    e.preventDefault();
+    route = b.dataset.lead;
+    reset();
+    $('#lm-route').textContent = route;
+    dlg.showModal();
+    setTimeout(() => $('#lm-name').focus(), 50);
+  });
+  $('#lm-close').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); }); // щелчок по затемнению
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let first = null;
+    Object.keys(rules).forEach((n) => { if (!check(n) && !first) first = n; });
+    if (first) { (first === 'city' ? target.city.querySelector('input') : target[first]).focus(); return; }
+    const payload = { источник: 'кнопка в ценах', маршрут: route, имя: form.name.value.trim(), контакт: form.contact.value.trim(), канал: val('channel'), город: val('city'), страница: location.pathname.split('/').pop() || 'index.html' };
+    // отправка заявки подключается отдельно (план сайта, фаза 8)
+    window.MChinaLead = payload;
+    document.dispatchEvent(new CustomEvent('mchina:lead', { detail: payload }));
+    $('#lm-ok-text').textContent = `${payload.имя}, свяжемся в течение рабочего дня: ${payload.канал === 'Звонок' ? 'позвоним' : 'напишем в ' + payload.канал}.`;
+    fields.hidden = true; ok.hidden = false; ok.focus();
+  });
 })();
